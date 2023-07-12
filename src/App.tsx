@@ -12,6 +12,7 @@ import BoardWrite from 'src/views/Board/Write';
 import BoardUpdate from 'src/views/Board/Update';
 
 import './App.css';
+import BoardListItem from './components/BoardListItem';
 
 // 메인화면            - path: '/'                         / component: <Main />
 // 로그인 / 회원가입   - path: '/auth'                      / component: <Authentication />
@@ -24,6 +25,7 @@ import './App.css';
 function App() {
   return (
   <>
+  <BoardListItem />
     <Header />
     <Routes>
       <Route path='/' element={<Main />} />

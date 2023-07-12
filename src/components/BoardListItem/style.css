@@ -1,0 +1,6 @@
+.board-list-item-box {
+    padding: 24px;
+    background-color: #ffffff;
+
+    display: flex;
+}
