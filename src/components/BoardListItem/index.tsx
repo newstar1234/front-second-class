@@ -1,15 +1,23 @@
 import React from 'react'
 import './style.css';
 import { boardListItemMock } from 'src/mocks';
+import { useNavigate } from 'react-router-dom';
 
 export default function BoardListItem() {
 
   const { boardNumber, boardTitle, boardContent, boardImage } = boardListItemMock;
   const { writerProfileImage, writerNickName, writerDate } = boardListItemMock;
   const { likeCount, viewCount, commentCount } = boardListItemMock;
+  
+  //! useNavigate() : 자바스크립트 로직 중에 페이지 이동을 시켜주는 훅 함수
+  const navigator = useNavigate();
+
+  const onClickHandler = () => {
+    navigator(`/board/detail/${boardNumber}`);
+  }
 
   return (
-    <div className='board-list-item-box'>
+    <div className='board-list-item-box' onClick= {onClickHandler}>
       <div className='board-list-item-left'>
         <div className='board-list-item-writer'>
           <div className='board-list-item-profile'>
