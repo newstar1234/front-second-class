@@ -14,6 +14,7 @@ import BoardUpdate from 'src/views/Board/Update';
 import './App.css';
 import BoardListItem from './components/BoardListItem';
 import Top3ListItem from './components/Top3ListItem';
+import CommentListItem from './components/CommentListItem';
 
 // 메인화면            - path: '/'                         / component: <Main />
 // 로그인 / 회원가입   - path: '/auth'                      / component: <Authentication />
@@ -26,7 +27,7 @@ import Top3ListItem from './components/Top3ListItem';
 function App() {
   return (
   <>
-  <Top3ListItem />
+  <CommentListItem />
     <Header />
     <Routes>
       <Route path='/' element={<Main />} />
