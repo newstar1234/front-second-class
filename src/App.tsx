@@ -12,10 +12,6 @@ import BoardWrite from 'src/views/Board/Write';
 import BoardUpdate from 'src/views/Board/Update';
 
 import './App.css';
-import BoardListItem from './components/BoardListItem';
-import Top3ListItem from './components/Top3ListItem';
-import CommentListItem from './components/CommentListItem';
-import InputBox from './components/InputBox';
 
 // 메인화면            - path: '/'                         / component: <Main />
 // 로그인 / 회원가입   - path: '/auth'                      / component: <Authentication />
@@ -28,7 +24,6 @@ import InputBox from './components/InputBox';
 function App() {
   return (
   <>
-  <InputBox label='주소 *' type='text' placeholder='우편번호 찾기' helper='우편번호를 선택해주세요.' />
     <Header />
     <Routes>
       <Route path='/' element={<Main />} />

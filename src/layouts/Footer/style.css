@@ -1,0 +1,27 @@
+#footer {
+    padding: 40px 120px 50px;
+
+    background-color: #373737;
+}
+
+.footer-top {
+    display: flex;
+
+    align-items: center;
+}
+
+.fotter-top-left {
+    display: flex;
+
+    align-items: center;
+}
+
+.footer-logo-icon {
+    margin-left: 10px;
+    
+    width: 24px;
+    height: 24px;
+
+    background-image: url(./asset/edit_fill.png);
+    background-position: 50% 50%;
+}
