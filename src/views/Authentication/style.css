@@ -14,10 +14,67 @@
     flex: 7;
 
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
+.auth-left-icon {
+    width: 50px;
+    height: 50px;
+
+    background-image: url(asset/auth_logo.png);
+    background-position: 50% 50%;
+    background-size: 100% 100%;
+}
+
+.auth-left-text-container {
+    margin-top: 8px;
+}
+
+.auth-left-text {
+    margin-top: 12px;
+    
+    color: #ffffff;
+    font-family: 'GimhaeGaya';
+    font-size: 40px;
+    font-weight: 400;
+    
+    letter-spacing: -1.2px;  
+    line-height: 100%; 
+    text-align: center;
+}
+
 .auth-right {
     flex: 5;
+}
+
+.auth-card {
+    border-radius: 10px;
+
+    padding: 50px 50px 30px;
+
+    height: calc(100% - 50px - 30px);
+
+    background-color: #ffffff;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.auth-card-top-text-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.auth-card-top-text {
+    font-size: 24px;
+    font-weight: 500;
+}
+
+.auth-card-bottom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }

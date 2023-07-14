@@ -39,7 +39,7 @@ function App() {
         <Route path='update/:boardNumber' element={<BoardUpdate />} />
       </Route>
     </Routes>
-    { path.pathname !== '/auth' && (<Footer/>) }   
+    { path.pathname !== '/auth' && (<Footer/>) }     
   </>
   );
 }
