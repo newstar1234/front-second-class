@@ -9,9 +9,10 @@ interface Props {
   helper?: string;
   icon?: INPUT_ICON;
   error?: boolean;
+  buttonHandler?: () => void
 } // mocks 데이터 말고  Props로 
 
-export default function InputBox( { label, type, placeholder, helper, icon, error } : Props) {
+export default function InputBox( { label, type, placeholder, helper, icon, error, buttonHandler } : Props) {
 
   return (
     <div className='input-box'>
@@ -20,7 +21,7 @@ export default function InputBox( { label, type, placeholder, helper, icon, erro
         <input className='input' type={ type } placeholder={ placeholder } />
         {
           icon && (
-            <div className='input-box-icon' >
+            <div className='input-box-icon' onClick={buttonHandler} >
             {
               icon === INPUT_ICON.ON ? (<div className='input-on-icon'></div>) :
               icon === INPUT_ICON.OFF? (<div className='input-off-icon'></div>) :
