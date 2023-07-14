@@ -56,6 +56,10 @@ export default function Authentication() {
     const [passwordError, setPasswordError ] = useState<boolean>(false);
     const [passwordCheckError, setPasswordCheckError] = useState<boolean>(false);
 
+    const [nicknameError, setNicknameError] = useState<boolean>(false);
+    const [telNumberError, setTelNumberError] = useState<boolean>(false);
+    const [addressError, setAddressError] = useState<boolean>(false);
+
 
     const onPasswordIconClicHandler = () => {
       setShowPassword(!showPassword);
@@ -90,9 +94,9 @@ export default function Authentication() {
                 </>
               ) : ( 
                 <> 
-                <InputBox label='닉네임*' type='text' placeholder='닉네임을 입력해주세요.' />
-                <InputBox label='핸드폰 번호*' type='text' placeholder='핸드폰 번호를 입력해주세요.' />
-                <InputBox label='주소*' type='text' placeholder='우편번호 찾기' icon={INPUT_ICON.ARROW} />
+                <InputBox label='닉네임*' type='text' placeholder='닉네임을 입력해주세요.' error={nicknameError} helper={nicknameError ? '닉네임을 입력해주세요' : '' } />
+                <InputBox label='핸드폰 번호*' type='text' placeholder='핸드폰 번호를 입력해주세요.' error={telNumberError} helper={ telNumberError ? '숫자만 입력해주세요.' : ''} />
+                <InputBox label='주소*' type='text' placeholder='우편번호 찾기' icon={INPUT_ICON.ARROW} error={addressError} helper={ addressError ? '우편번호를 선택해주세요.' : ''} />
                 <InputBox label='상세주소*' type='text' placeholder='상세 주소를 입력해주세요.' />
                 </> 
               )
