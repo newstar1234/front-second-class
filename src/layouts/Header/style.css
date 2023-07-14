@@ -14,6 +14,10 @@
     align-items: center;
 }
 
+.header-left {
+    cursor: pointer;
+}
+
 .header-left-logo-icon {
     margin: 3px;
 

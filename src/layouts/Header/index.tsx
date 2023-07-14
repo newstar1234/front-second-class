@@ -1,22 +1,48 @@
 import React from 'react'
-import {useState} from 'react'
+import { useState } from 'react'
 import './style.css';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export default function Header() {
 
   const [searchState, setSearchState] = useState<boolean>(false);
+  const [login, setLogin] = useState<boolean>(false); 
 
+  const navigator = useNavigate();
   const {pathname} = useLocation();
+
+  const showSearch = pathname !== '/my-page' && pathname !== '/board/write' && pathname.indexOf('board/update') === -1;
+  const isAuth = pathname === '/auth';
+  const isMyPage = pathname === '/my-page';
+  const showUpload = pathname === '/board/wirte' || pathname.indexOf('/board/update') !== -1;
+
+  const onLogoClickHandler = () => {
+    navigator('/');
+  }
+
+  const onSignInButtonClickHandler = () => {
+    setLogin(true);
+    navigator('/auth'); 
+  }
+
+  const onMyPageButtonClickHandler = () => {
+    navigator('/my-page');
+  }
+
+  const onSignOutButtonClickHandler = () => {
+    setLogin(false);
+    navigator('/');
+  }
+
 
   return (
     <div id='header'>
-      <div className='header-left'>
+      <div className='header-left' onClick={onLogoClickHandler}>
         <div className='header-left-logo-icon'></div>
         <div className='header-left-logo-text'>NEWSTAR's Board</div>
       </div>
       <div className='header-right'>
-        { ( pathname !== '/my-page' && pathname !== '/board/write' && pathname !== 'board/update') && 
+        { ( showSearch ) && 
         (searchState ? 
           (
             <div className='header-search-box'>
@@ -30,16 +56,14 @@ export default function Header() {
             <div className='header-icon-box' onClick={ () => setSearchState(true) }>
              <div className='header-search-icon'></div>
             </div>
-          ) )
-        }
+          ))
+          }
         {
-          pathname !== '/auth' && (
-            <>
-              <div className='header-black-button'>로그인</div>
-              <div className='header-white-button'>마이페이지</div>
-              <div className='header-white-button'>로그아웃</div>
-              <div className='header-black-disable-button'>업로드</div>
-            </>
+          !isAuth && ( 
+            isMyPage ? (<div className='header-white-button' onClick={onSignOutButtonClickHandler}>로그아웃</div>) :
+            showUpload ? (<div className='header-black-disable-button'>업로드</div>) :
+            login ? (<div className='header-white-button' onClick={onMyPageButtonClickHandler}>마이페이지</div>) :
+            (<div className='header-black-button' onClick={onSignInButtonClickHandler}>로그인</div> ) 
           )
         }
       </div>

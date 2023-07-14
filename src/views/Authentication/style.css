@@ -1,0 +1,23 @@
+#auth-wrapper {
+    padding: 100px 120px 150px;
+
+    height: calc(100vh - 64px - 100px - 150px);
+
+    background-image: url(asset/auth_background.png);
+    background-position: 50% 50%;
+    background-size: 100% 100%;
+
+    display: flex;
+}
+
+.auth-left {
+    flex: 7;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.auth-right {
+    flex: 5;
+}

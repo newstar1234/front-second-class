@@ -3,6 +3,9 @@ import './style.css';
 
 export default function Authentication() {
   return (
-    <div>Authentication</div>
+    <div id='auth-wrapper'>
+      <div className='auth-left'></div>
+      <div className='auth-right'></div>
+    </div>
   )
 }
