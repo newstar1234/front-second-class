@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 import './style.css';
 import InputBox from 'src/components/InputBox';
-import { INPUT_ICON } from 'src/constants';
+import { INPUT_ICON, emailPattern, telNumberPattern } from 'src/constants';
 import { signInMock } from 'src/mocks';
 import { useNavigate } from 'react-router-dom';
+import { Address, useDaumPostcodePopup } from 'react-daum-postcode';
 
 export default function Authentication() {
 
@@ -63,7 +64,9 @@ export default function Authentication() {
   
   const SignUpCard = () => {
 
-    const [page, setPage] = useState< 1 | 2 >(1);
+    const open = useDaumPostcodePopup();
+
+    const [page, setPage] = useState< 1 | 2 >(2);
     const [showPassword, setShowPassword] = useState<boolean>(false);
     const [showPasswordCheck, setShowPasswordCheck] = useState<boolean>(false);
     
@@ -92,41 +95,47 @@ export default function Authentication() {
       setShowPasswordCheck(!showPasswordCheck);
     }
 
+    const onAddressIconClickHandler = () => {
+      open({ onComplete });
+    }
+
+    const onComplete = (data:Address) => {
+      const address = data.address;
+      setAddress(address);
+    }
+
     const onButtonClickHandler = () => {
-      // if (page === 1 ) setPage(2);
-      // else onSignUpButtonClickHandler();
-      if ( page === 1) {
-        setPasswordError(password.length < 8);
-        setPasswordCheckError(password !== passwordCheck);
-        if( !passwordError && !passwordCheckError) setPage(2);
-          // if ( password.length < 8 ){
-          //   setPasswordError(true);
-          //   return;
-          // }
-          // if ( password !== passwordCheck ){
-          //   setPasswordCheckError(true);
-          //   return;
-          // }
-      } else {
-          if ( nickname === '' )  //( !nickname ) 와 동일함
-          {
-            setNicknameError(true);
-            return;
-          }
-          if ( address === '' ) // ( !address )
-          {
-            setAddressError(true);
-            return;
-          }
-        setView('sign-in');
-      }
+      if ( page === 1 ) checkPage1();
+      if ( page === 2 ) checkPage2();
     }
 
     const onSignInClickHandler = () => {
       setView('sign-in');
     }
 
-    
+    const checkPage1 = () => {
+      const emailPatternFlag = !emailPattern.test(email);
+      const passwordFlag = password.length < 8;
+      const passwordCheckFlag = password !== passwordCheck;
+
+      setEmailPatternError(emailPatternFlag);
+      setPasswordError(passwordFlag);
+      setPasswordCheckError(passwordCheckFlag);
+
+      if(!emailPatternFlag && !passwordFlag && !passwordCheckFlag ) setPage(2);
+    }
+
+    const checkPage2 = () => {
+      const telNumberFlag = !telNumberPattern.test(telNumber);
+
+      setTelNumberError(telNumberFlag);
+      setNicknameError(!nickname);
+      setAddressError (!address);
+
+      if(!telNumberFlag && nickname && address) setView('sign-in');
+    }
+
+
 
     return(
       <div className='auth-card'>
@@ -147,7 +156,7 @@ export default function Authentication() {
                 <> 
                 <InputBox label='닉네임*' type='text' placeholder='닉네임을 입력해주세요.' error={nicknameError} helper={nicknameError ? '닉네임을 입력해주세요' : '' } value={nickname} setValue={setNickname} />
                 <InputBox label='핸드폰 번호*' type='text' placeholder='핸드폰 번호를 입력해주세요.' error={telNumberError} helper={ telNumberError ? '숫자만 입력해주세요.' : ''} value={telNumber} setValue={setTelNumber} />
-                <InputBox label='주소*' type='text' placeholder='우편번호 찾기' icon={INPUT_ICON.ARROW} error={addressError} helper={ addressError ? '우편번호를 선택해주세요.' : ''} value={address} setValue={setAddress} />
+                <InputBox label='주소*' type='text' placeholder='우편번호 찾기' icon={INPUT_ICON.ARROW} error={addressError} helper={ addressError ? '우편번호를 선택해주세요.' : ''} value={address} setValue={setAddress} buttonHandler={onAddressIconClickHandler} />
                 <InputBox label='상세주소*' type='text' placeholder='상세 주소를 입력해주세요.' value={addressDetail} setValue={setAddressDetail} />
                 </> 
               )
