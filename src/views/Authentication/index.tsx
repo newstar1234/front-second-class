@@ -135,8 +135,6 @@ export default function Authentication() {
       if(!telNumberFlag && nickname && address) setView('sign-in');
     }
 
-
-
     return(
       <div className='auth-card'>
         <div className='auth-card-top'>
