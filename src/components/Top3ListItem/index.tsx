@@ -2,13 +2,17 @@ import React from 'react'
 import './style.css';
 import { top3ListItemMock } from 'src/mocks';
 import { useNavigate } from 'react-router-dom';
+import { Top3ListResponseDto } from 'src/interfaces/response';
 
+interface Props {
+  item: Top3ListResponseDto;
+}
 
-export default function Top3ListItem() {
+export default function Top3ListItem({item}:Props) {
 
-  const { boardNumber, boardTitle, boardContent, boardImage } = top3ListItemMock;
-  const { writerProfileImage, writerNickName, writerDate } = top3ListItemMock;
-  const { likeCount, viewCount, commentCount } = top3ListItemMock;
+  const { boardNumber, boardTitle, boardContent, boardImage } = item;
+  const { writerProfileImage, writerNickName, writerDate } = item;
+  const { likeCount, viewCount, commentCount } = item;
 
   const navigator = useNavigate();
 

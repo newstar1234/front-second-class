@@ -32,3 +32,46 @@
     display: flex;
     justify-content: space-evenly;
 }
+
+.main-bottom {
+    padding: 40px 120px;
+    
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.main-bottom-text {
+    margin-bottom: 20px;
+
+    font-size: 24px;
+    font-weight: 500;
+}
+
+.main-bottom-container {
+    display: flex;
+}
+
+.main-bottom-board-list {
+    flex: 8;
+}
+
+.main-bottom-popular-box {
+    margin-left: 24px;
+    
+    flex: 4;
+}   
+
+.main-bottom-popular-card {
+    padding: 24px;
+    background-color: #ffffff;
+}
+
+.main-bottom-popular-text {
+    margin-bottom: 24px;
+
+    font-size: 24px;
+    font-weight: 500;
+}
+
+.main-bottom-popular-list {
+
+}
