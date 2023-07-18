@@ -41,13 +41,32 @@ export default function Main() {
     const [popularList, setPopularList] = useState<string[]>([]);
 
     const [currentPage, setCurrentPage] = useState<number>(1); //현재페이지
+    const [currentSection, setCurrentSection] = useState<number>(1); 
     const [totalPage, setTotalPage] = useState<number[]>([]); //전체페이지
-
+    const [totalSection, setTotalSection] = useState<number>(1);
+ 
     const onPopularClickHandler = (word:string) => {
       navigator(`/search/${word}`);
     }
 
+    const onPageClickHandler = (page:number) => {
+      setCurrentPage(page);
+    }
+
+    const onPreviousClickHandler = () => {
+      // 한 페이지씩 이동
+      if(currentPage != 1) setCurrentPage(currentPage -1);
+    }
+    
+    const onNextClickHandler = () => {
+      // 한 페이지씩 이동
+      if(currentPage != totalPage.length) setCurrentPage(currentPage +1);
+    }
+
     useEffect(() => {
+
+      const boardCount = 72;
+
       if(!currentList.length) setCurrentList(currentBoardListMock);
       if(!totalPage.length){
         const pageList=[]; 
@@ -78,9 +97,17 @@ export default function Main() {
           </div>
         </div>
         <div className='main-bottom-pagination'> {/** 페이지 이동 */}
-          <div className='pagination-left'>{'< 이전'}</div>
-          {totalPage.map( (page) => (<div className='pagination-page'>{page}</div>) )}
-          <div className='pagination-right'>{'다음 >'}</div>
+          <div className='pagination-button' onClick={onPreviousClickHandler}>
+            <div className='pagination-left-icon'></div>
+            <div className='pagination-button-text'>이전</div>
+          </div>
+          <div className='pagination-text'>{'\|'}</div>
+          {totalPage.map( (page) => (<div className={currentPage === page ? 'pagination-page-active' : 'pagination-page'} onClick={() => onPageClickHandler(page)} >{page}</div>) )}
+          <div className='pagination-text'>{'\|'}</div>
+          <div className='pagination-button' onClick={onNextClickHandler}>
+            <div className='pagination-button-text'>다음</div>
+            <div className='pagination-right-icon'></div>
+          </div>
         </div>
       </div>
     )
