@@ -75,7 +75,7 @@ export const currentBoardListMock = [
     }
 ];
 
-export const popularWordList= ['안녕하세요', 'hi', '반갑습니다', '퇴근', '집에가쟈', '저녁뭐먹지', '오예'];
+export const popularWordListMock= ['안녕하세요', 'hi', '반갑습니다', '퇴근', '집에가쟈', '저녁뭐먹지', '오예', '부산', '창원', '마산'];
 
 export const top3ListItemMock = {
     writerProfileImage: 'https://thumb.mtstarnews.com/06/2023/06/2023062107375547872_1.jpg',
