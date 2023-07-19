@@ -7,6 +7,7 @@ import { SearchListResponseDto } from 'src/interfaces/response';
 import { COUNT_BY_PAGE } from 'src/constants';
 import { getPagination } from 'src/utils';
 import Pagination from 'src/components/Pagination';
+import { usePagination } from 'src/hooks';
 
 export default function Search() {
 
@@ -16,39 +17,16 @@ export default function Search() {
   
   const [boardCount, setBoardCount] = useState<number>(0);  // 검색어 카운트 
   
-  const [currentPage, setCurrentPage] = useState<number>(1);  //현재 뿌려주는 게시물의 페이지 // 1은 1~5 // 2는 5~10
-  const [currentSection, setCurrentSection] = useState<number>(1); // 현재페이지 섹션
-  const [totalPage, setTotalPage] = useState<number[]>([]);  //전체 페이지
-  const [totalSection, setTotalSection] = useState<number>(1); // 전체 섹션
-
-  const [maxPage, setMaxPage] = useState<number>(0);
-  const [minPage, setMinPage] = useState<number>(0);
-  const [totalPageCount, setTotalPageCount] = useState<number>(0);
-
   const [searchList, setSearchList] = useState<SearchListResponseDto[]>([]);
   const [pageBoardList, setPageBoardList] = useState<SearchListResponseDto[]>([]);  //  실제로 보여줘야하는 페이지
-
+  
   const [relationList, setRelationList] = useState<string[]>([]);
+  
+  const { totalPage, currentPage, currentSection, onPageClickHandler, onNextClickHandler, onPreviousClickHandler, changeSection } = usePagination();
+  // pagination 사용시 usePagination 만들어서 불러주면 값 사용가능 
 
   const onRelationClickHandler = (word: string) => {
     navigator(`/search/${word}`);
-  }
-// ! 다시보기!! 안됨!
-  const onPageClickHandler = (page: number) => {
-    setCurrentPage(page);
-  }
-
-  const onPreviousClickHandler = () => { //이전
-    if(currentPage === 1) return;
-    if(currentPage === minPage) setCurrentSection(currentSection -1);
-
-    setCurrentPage(currentPage -1);
-  }
-
-  const onNextClickHandler = () => {  //다음
-    if(currentPage === totalPageCount) return;
-    if(currentPage === maxPage) setCurrentSection(currentSection +1);
-    setCurrentPage(currentPage +1);
   }
 
   const getPageBoardList = () => {  // 깔끔하게 함수로 
@@ -66,19 +44,13 @@ export default function Search() {
     
     getPageBoardList();
 
-    const boardCount = searchBoardListMock.length;  //전체 보드의 수
-    const{section, maxPage, minPage, totalPageCount } = getPagination(boardCount, currentSection);
-
-    setMaxPage(maxPage);
-    setMinPage(minPage);
-    setTotalSection(section);
-    setTotalPageCount(totalPageCount);
-
-    const pageList = [];
-    for ( let page = minPage; page <= maxPage; page++) pageList.push(page); 
-    setTotalPage(pageList);
+    changeSection(searchBoardListMock.length);
    
   }, [searchWord]);
+
+  useEffect(() => {
+    changeSection(searchBoardListMock.length);
+  }, [currentSection]);
 
   useEffect(() => {
     getPageBoardList();

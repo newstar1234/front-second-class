@@ -9,19 +9,31 @@ import { useNavigate } from 'react-router-dom';
 import { COUNT_BY_PAGE, COUNT_BY_SECTION, PAGE_BY_SECTION } from 'src/constants';
 import { getPagination } from 'src/utils';
 import Pagination from 'src/components/Pagination';
+import { usePagination } from 'src/hooks';
 
+//            component            //
+// description: 메인 화면 컴포넌트 //
 export default function Main() {
 
+  //               function                  // 
+  // description: 페이지 이동을 위한 네비게이터 함수 //
   const navigator = useNavigate();
 
+  //        component        // 
+  // description: 메인 화면의 상단 //
   const MainTop = () => {
 
+    //        state           // 
+    // description: 인기 게시물 리스트 상태 // 
     const [top3List, setTop3List] = useState<Top3ListResponseDto[]>([]);
     
+    //       effect      // 
+    // description: 첫 시작 시 인기 게시물 데이터 불러오기 // 
     useEffect( () => {
       if(!top3List.length) setTop3List(top3ListMock);
     }, [] );
 
+    //       render       // 
     return (
       <div className='main-top'>
         <div className='main-top-text-container'>
@@ -43,68 +55,16 @@ export default function Main() {
     const [currentList, setCurrentList] = useState<CurrentListResponseDto[]>([]);
     const [popularList, setPopularList] = useState<string[]>([]);
 
-    const [currentPage, setCurrentPage] = useState<number>(1); //현재페이지
-    const [currentSection, setCurrentSection] = useState<number>(1); //현재페이지 섹션
-    const [totalPage, setTotalPage] = useState<number[]>([]); //전체페이지
-    const [totalSection, setTotalSection] = useState<number>(1); // 전체페이지 섹션
-
-    const [totalPageCount, setTotalPageCount] = useState<number>(0);
-    const [minPage, setMinPage] = useState<number>(0);
-    const [maxPage, setMaxPage] = useState<number>(0);
+    // 두 줄로 생성시 두번 호출되서 작동이 안됨
+    const { totalPage, currentPage, currentSection, onPageClickHandler, onNextClickHandler, onPreviousClickHandler, changeSection } = usePagination();
  
     const onPopularClickHandler = (word:string) => {
       navigator(`/search/${word}`);
     }
 
-    const onPageClickHandler = (page:number) => {
-      setCurrentPage(page);
-    }
-
-    const onPreviousClickHandler = () => {
-      // 한 페이지씩  이전 이동
-      // if(currentPage != 1) setCurrentPage(currentPage -1);
-
-      // previous 섹션 이동
-      // if(currentSection != 1) setCurrentSection(currentSection -1);
-
-      // 한 페이지씩 이동 + 섹션 이동
-      if(currentPage == 1) return;  //1페이지면 이동 안 함 
-      if(currentPage == minPage) setCurrentSection(currentSection -1);  // 섹션이동
-      setCurrentPage(currentPage -1); //한 페이지씩 이동
-    }
-    
-    const onNextClickHandler = () => {
-      // 한 페이지씩 다음 이동
-      // if(currentPage != totalPage.length) setCurrentPage(currentPage +1);
-      
-      // next 섹션 이동
-      // if(currentSection != totalSection) setCurrentSection(currentSection +1);
-
-      // 한 페이지씩 이동 + 섹션 이동
-      if( currentPage == totalPageCount ) return; 
-      if( currentPage == maxPage ) setCurrentSection(currentSection + 1); // 섹션이동
-      setCurrentPage(currentPage +1);  //한 페이지씩 이동
-
-    }
-
     useEffect(() => {
-
-      const boardCount = 72;  // 전체 게시물 72개  
-
-      const { section, maxPage, minPage, totalPageCount } = getPagination(boardCount, currentSection);  
-      
-      setTotalSection(section);
-      setMaxPage(maxPage);
-      setMinPage(minPage);
-      setTotalPageCount(totalPageCount);
-
+      changeSection(72);
       if(!currentList.length) setCurrentList(currentBoardListMock);
-      // if(!totalPage.length){ //페이지 이동시 사용 // 섹션 이동시 사용안함
-        const pageList=[]; 
-        for (let page = minPage; page <= maxPage; page++) pageList.push(page); 
-        setTotalPage(pageList);
-        // }
-
     }, [currentSection]);
 
     useEffect(() => {

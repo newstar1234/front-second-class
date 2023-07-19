@@ -18,7 +18,7 @@ export default function Pagination({totalPage, currentPage, onPageClickHandler, 
             <div className='pagination-button-text'>이전</div>
         </div>
         <div className='pagination-text'>{'\|'}</div>
-            { totalPage.map( (page) => (<div className={currentPage === page ? 'pagination-page-active' : 'pagination-page'} onClick={ () => onPageClickHandler(page) }>{page}</div>) ) }  {/** 콜백함수로 onPageClickHandler */}
+            { totalPage.map( (page) => (<div className={currentPage === page ? 'pagination-page-active' : 'pagination-page'} onClick={ () => onPageClickHandler(page) }>{page}</div>) ) }  {/** 콜백함수로 onClick={ () => onPageClickHandler(page) */}
         <div className='pagination-text'>{'\|'}</div>
         <div className='pagination-button' onClick={onNextClickHandler}>
             <div className='pagination-button-text'>다음</div>
