@@ -1,21 +1,33 @@
 import { useEffect, useState } from "react";
 import { getPagination } from "src/utils";
 
+//        hook         // 
+// description: 페이지네이션 관련 상태관리 훅 함수 // 
 const usePagination = () => {
-    const [currentPage, setCurrentPage] = useState<number>(1); //현재페이지
-    const [currentSection, setCurrentSection] = useState<number>(1); //현재페이지 섹션
-    const [totalPage, setTotalPage] = useState<number[]>([]); //전체페이지
-    const [totalSection, setTotalSection] = useState<number>(1); // 전체페이지 섹션
 
-    const [totalPageCount, setTotalPageCount] = useState<number>(0);
-    const [minPage, setMinPage] = useState<number>(0);
-    const [maxPage, setMaxPage] = useState<number>(0);
+  //           state          // 
+  // description : 현재 페이지 상태 //
+  const [currentPage, setCurrentPage] = useState<number>(1); //현재페이지
+  // description : 현재 섹션 상태 // 
+  const [currentSection, setCurrentSection] = useState<number>(1); //현재페이지 섹션
+  // description :  한 섹션에 표시될 페이지 리스트 상태 // 
+  const [totalPage, setTotalPage] = useState<number[]>([]); //전체페이지
+  // description : 전체 섹션 상태  //
+  const [totalSection, setTotalSection] = useState<number>(1); // 전체페이지 섹션
+  // description: 전체 페이지 수 상태  //
+  const [totalPageCount, setTotalPageCount] = useState<number>(0);
+  // description : 한 섹션의 최소페이지 상태 //
+  const [minPage, setMinPage] = useState<number>(0);
+  // description : 한 섹션의 최고 페이지 상태 //
+  const [maxPage, setMaxPage] = useState<number>(0);
 
-
+//       event handler        //
+// description : 페이지 클릭 이벤트 // 
 const onPageClickHandler = (page:number) => {
     setCurrentPage(page);
   }
 
+  // description: 이전 버튼 클릭 이벤트 //
   const onPreviousClickHandler = () => {
     // 한 페이지씩  이전 이동
     // if(currentPage != 1) setCurrentPage(currentPage -1);
@@ -29,6 +41,7 @@ const onPageClickHandler = (page:number) => {
     setCurrentPage(currentPage -1); //한 페이지씩 이동
   }
   
+  // description : 다음 버튼 클릭 이벤트 //
   const onNextClickHandler = () => {
     // 한 페이지씩 다음 이동
     // if(currentPage != totalPage.length) setCurrentPage(currentPage +1);
@@ -43,6 +56,8 @@ const onPageClickHandler = (page:number) => {
 
   }
 
+  //         function           // 
+  // description : 현재 섹션이 변경될 때 호출할 함수  //
   const changeSection = (boardCount: number) => {
     const { section, maxPage, minPage, totalPageCount } = getPagination(boardCount, currentSection);  
     
@@ -55,7 +70,7 @@ const onPageClickHandler = (page:number) => {
       for (let page = minPage; page <= maxPage; page++) pageList.push(page); 
       setTotalPage(pageList);
   }
-
+  //         render         // 
   return { totalPage, currentPage, currentSection, onPageClickHandler, onNextClickHandler, onPreviousClickHandler, changeSection };
 
 }
