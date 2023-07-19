@@ -72,3 +72,10 @@
     cursor: pointer;
     background-color: rgba(0,0,0,0.15);
 }
+
+.search-pagination {
+    margin-top: 60px;
+    
+    display: flex;
+    justify-content: center;
+}

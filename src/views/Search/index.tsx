@@ -5,15 +5,26 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { relationWordListMock, searchBoardListMock } from 'src/mocks';
 import { SearchListResponseDto } from 'src/interfaces/response';
 import { COUNT_BY_PAGE } from 'src/constants';
+import { getPagination } from 'src/utils';
+import Pagination from 'src/components/Pagination';
 
 export default function Search() {
 
   const navigator = useNavigate();
 
-  const { searchWord } = useParams();  // 검색어 '안녕' //! console로 확인하기!
+  const { searchWord } = useParams();  // 검색어 '안녕하세요' 
   
   const [boardCount, setBoardCount] = useState<number>(0);  // 검색어 카운트 
+  
   const [currentPage, setCurrentPage] = useState<number>(1);  //현재 뿌려주는 게시물의 페이지 // 1은 1~5 // 2는 5~10
+  const [currentSection, setCurrentSection] = useState<number>(1); // 현재페이지 섹션
+  const [totalPage, setTotalPage] = useState<number[]>([]);  //전체 페이지
+  const [totalSection, setTotalSection] = useState<number>(1); // 전체 섹션
+
+  const [maxPage, setMaxPage] = useState<number>(0);
+  const [minPage, setMinPage] = useState<number>(0);
+  const [totalPageCount, setTotalPageCount] = useState<number>(0);
+
   const [searchList, setSearchList] = useState<SearchListResponseDto[]>([]);
   const [pageBoardList, setPageBoardList] = useState<SearchListResponseDto[]>([]);  //  실제로 보여줘야하는 페이지
 
@@ -22,12 +33,21 @@ export default function Search() {
   const onRelationClickHandler = (word: string) => {
     navigator(`/search/${word}`);
   }
+// ! 다시보기!! 안됨!
+  const onPageClickHandler = (page: number) => {
+    setCurrentPage(page);
+  }
 
-  const onPreviousClickHandler = () => {
+  const onPreviousClickHandler = () => { //이전
+    if(currentPage === 1) return;
+    if(currentPage === minPage) setCurrentSection(currentSection -1);
+
     setCurrentPage(currentPage -1);
   }
 
-  const onNextClickHandler = () => {
+  const onNextClickHandler = () => {  //다음
+    if(currentPage === totalPageCount) return;
+    if(currentPage === maxPage) setCurrentSection(currentSection +1);
     setCurrentPage(currentPage +1);
   }
 
@@ -45,6 +65,19 @@ export default function Search() {
     setRelationList(relationWordListMock);
     
     getPageBoardList();
+
+    const boardCount = searchBoardListMock.length;  //전체 보드의 수
+    const{section, maxPage, minPage, totalPageCount } = getPagination(boardCount, currentSection);
+
+    setMaxPage(maxPage);
+    setMinPage(minPage);
+    setTotalSection(section);
+    setTotalPageCount(totalPageCount);
+
+    const pageList = [];
+    for ( let page = minPage; page <= maxPage; page++) pageList.push(page); 
+    setTotalPage(pageList);
+   
   }, [searchWord]);
 
   useEffect(() => {
@@ -71,19 +104,12 @@ export default function Search() {
           </div>
         </div>
       </div>
-      <div className='search-pagination'>
-        <div className='pagination-button' onClick={onPreviousClickHandler}>
-          <div className='pagination-left-icon'></div>
-          <div className='pagination-button-text'>이전</div>
-        </div>
-        <div className='pagination-text'></div>
-        <div></div>
-        <div className='pagination-text'></div>
-        <div className='pagination-button' onClick={onNextClickHandler}>
-          <div className='pagination-button-text'>다음</div>
-          <div className='pagination-right-icon'></div>
-        </div>
-      </div>
+      <Pagination 
+          totalPage={totalPage} 
+          currentPage={currentPage} 
+          onPageClickHandler={onPageClickHandler} 
+          onNextClickHandler={onNextClickHandler} 
+          onPreviousClickHandler={onPreviousClickHandler} />
     </div>
   )
 }

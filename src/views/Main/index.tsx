@@ -8,6 +8,7 @@ import BoardListItem from 'src/components/BoardListItem';
 import { useNavigate } from 'react-router-dom';
 import { COUNT_BY_PAGE, COUNT_BY_SECTION, PAGE_BY_SECTION } from 'src/constants';
 import { getPagination } from 'src/utils';
+import Pagination from 'src/components/Pagination';
 
 export default function Main() {
 
@@ -91,6 +92,7 @@ export default function Main() {
       const boardCount = 72;  // 전체 게시물 72개  
 
       const { section, maxPage, minPage, totalPageCount } = getPagination(boardCount, currentSection);  
+      
       setTotalSection(section);
       setMaxPage(maxPage);
       setMinPage(minPage);
@@ -125,19 +127,12 @@ export default function Main() {
             </div>
           </div>
         </div>
-        <div className='main-bottom-pagination'> {/** 페이지 이동 */}
-          <div className='pagination-button' onClick={onPreviousClickHandler}>
-            <div className='pagination-left-icon'></div>
-            <div className='pagination-button-text'>이전</div>
-          </div>
-          <div className='pagination-text'>{'\|'}</div>
-          {totalPage.map( (page) => (<div className={currentPage === page ? 'pagination-page-active' : 'pagination-page'} onClick={() => onPageClickHandler(page)} >{page}</div>) )}
-          <div className='pagination-text'>{'\|'}</div>
-          <div className='pagination-button' onClick={onNextClickHandler}>
-            <div className='pagination-button-text'>다음</div>
-            <div className='pagination-right-icon'></div>
-          </div>
-        </div>
+        <Pagination 
+          totalPage={totalPage} 
+          currentPage={currentPage} 
+          onPageClickHandler={onPageClickHandler} 
+          onNextClickHandler={onNextClickHandler} 
+          onPreviousClickHandler={onPreviousClickHandler} />
       </div>
     )
   }
