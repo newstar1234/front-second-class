@@ -4,6 +4,7 @@ import BoardListItem from 'src/components/BoardListItem';
 import { useNavigate, useParams } from 'react-router-dom';
 import { relationWordListMock, searchBoardListMock } from 'src/mocks';
 import { SearchListResponseDto } from 'src/interfaces/response';
+import { COUNT_BY_PAGE } from 'src/constants';
 
 export default function Search() {
 
@@ -25,11 +26,9 @@ export default function Search() {
   useEffect(() => {
     setSearchList(searchBoardListMock);
     
-    const pageBoardList = searchBoardListMock.slice(0, 5);  //자르는 메서드 slice
-    // [];
-    // for (let index = 0; index < 5; index++) {
-    //   pageBoardList.push(searchBoardListMock[index]);
-    // }  //! 이건 좀 무식한 방법
+    const lastIndex = searchBoardListMock.length > COUNT_BY_PAGE ? COUNT_BY_PAGE : searchBoardListMock.length; //유연하게 // COUNT_BY_PAGE = 5
+    const pageBoardList = searchBoardListMock.slice(0, lastIndex);  //자르는 메서드 slice
+    
     setPageBoardList(pageBoardList);  //5개 잘라서 넣기
 
     setBoardCount((searchWord as string).length);
