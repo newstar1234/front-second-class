@@ -82,24 +82,29 @@ export default function Search() {
         <div className='search-text-emphasis'>{boardCount}</div>
       </div>
       <div className='search-container'>
-        <div className='search-board-list'>
+        { boardCount ? (<div className='search-board-list'>
           { pageBoardList.map( (item) => (<BoardListItem item={item} />) ) }
-        </div>
+        </div>) : (<div className='search-board-list-nothing'>검색 결과가 없습니다.</div>) }
+        
         <div className='search-relation-box'>
           <div className='search-relation-card'>
             <div className='search-relation-text'>관련 검색어</div>
-            <div className='search-relation-list'>
+              { relationList.length ? (<div className='search-relation-list'>
               {relationList.map( (item) => (<div className='relation-chip' onClick={ () => onRelationClickHandler(item) } >{item}</div>) )}
-            </div>
+            </div>) : (<div className='search-relation-list-nothing'>관련 검색어가 없습니다.</div>) }
+
           </div>
         </div>
       </div>
-      <Pagination 
+      { boardCount !== 0 && (
+        <Pagination 
           totalPage={totalPage} 
           currentPage={currentPage} 
           onPageClickHandler={onPageClickHandler} 
           onNextClickHandler={onNextClickHandler} 
           onPreviousClickHandler={onPreviousClickHandler} />
+      ) }
+      
     </div>
   )
 }

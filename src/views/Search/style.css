@@ -33,6 +33,18 @@
     flex: 8;
 }
 
+.search-board-list-nothing {
+    flex: 8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: rgba(0,0,0,0.4);
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 100%;
+}
+
 .search-relation-box {
     margin-left: 24px;
     flex: 4;
@@ -47,6 +59,19 @@
 .search-relation-text {
     margin-bottom: 24px;
 
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 100%;
+}
+
+.search-relation-list-nothing {
+    height: 310px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: rgba(0,0,0,0.4);
     font-size: 24px;
     font-weight: 500;
     line-height: 100%;
