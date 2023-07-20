@@ -115,6 +115,20 @@
     flex: 8;
 }
 
+.my-page-bottom-board-list-nothing {
+    flex: 8;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: rgba(0,0,0,0.4);
+    
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 100%;
+}
+
 .my-page-bottom-write-box {
     margin-left: 24px;
 

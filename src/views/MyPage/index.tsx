@@ -1,9 +1,13 @@
-import React, { ChangeEvent, useRef, useState } from 'react'
+import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
 import './style.css';
 import my_page_profile_default from './asset/my_page_profile_default.png';
 import Pagination from 'src/components/Pagination';
 import { usePagination } from 'src/hooks';
 import { MyPageListResponseDto } from 'src/interfaces/response';
+import { MyPageBoardListMock } from 'src/mocks';
+import { COUNT_BY_PAGE } from 'src/constants';
+import BoardListItem from 'src/components/BoardListItem';
+import { useNavigate } from 'react-router-dom';
 
 //              component             //
 // description : 마이페이지 화면  //
@@ -90,27 +94,67 @@ export default function MyPage() {
   const [myPageBoardList, setMyPageBoardList] = useState<MyPageListResponseDto[]>([]);
   // description : 전체 게시물 개수 상태 //
   const [boardCount, setBoardCount] = useState<number>(0);
+  // description : 현재 페이지에서 보여줄 게시물 리스트 상태 //
+  const [pageBoardList, setPageBoardList] =useState<MyPageListResponseDto[]>([]);
   // description : 페이지네이션과 관련된 상태 및 함수 //
-  const {totalPage, currentPage, currentSection, onPageClickHandler, onPreviousClickHandler, onNextClickHandler} = usePagination();
+  const {totalPage, currentPage, currentSection, onPageClickHandler, onPreviousClickHandler, onNextClickHandler, changeSection} = usePagination();
   
   //              function             //
-  //              event handler             //
-  //              effect             //
+  // description : 페이지 이동을 위한 네비게이터 함수 //
+  const navigator = useNavigate();
 
+  // description : 현재 페이지의 게시물 리스트 분류 함수 //
+  const getPageBoardList = (boardCount: number) => {
+    const startIndex = COUNT_BY_PAGE * (currentPage -1);
+    const lastIndex = boardCount > COUNT_BY_PAGE * currentPage ?
+                      COUNT_BY_PAGE * currentPage : boardCount;
+    const pageBoardList = MyPageBoardListMock.slice(startIndex, lastIndex);
+
+    setPageBoardList(pageBoardList);
+  } 
+
+  //              event handler             //
+  const onWriteButtonClickHandler = () => {
+    navigator('/board/write');
+  }
+
+  //              effect             //
+  // description : 화면 첫 로드시 게시물 리스트 불러오기 //
+  useEffect(() => {
+    setMyPageBoardList(MyPageBoardListMock);
+    setBoardCount(MyPageBoardListMock.length);
+  }, []);
+
+  // description : 현재 페이지가 바뀔 때마다 마이페이지 게시물 분류하기 //
+  useEffect(() => {
+    getPageBoardList(MyPageBoardListMock.length);
+  }, [currentPage]);
+
+  // description : 현재 섹션이 바뀔 때마다 페이지 리스트 변경 //
+  useEffect (() => {
+    changeSection(MyPageBoardListMock.length);
+  }, [currentSection]);
+  
+
+    //             render             //
     return(
       <div className='my-page-bottom'>
-        <div className='my-page-bottom-text'>내 게시물 <span className='my-page-bottom-text-emphasis' >10</span></div>
+        <div className='my-page-bottom-text'>내 게시물 <span className='my-page-bottom-text-emphasis' >{boardCount}</span></div>
         <div className='my-page-bottom-container'>
-          <div className='my-page-bottom-board-list'>
-
-          </div>
+            { boardCount ? 
+            (<div className='my-page-bottom-board-list'>
+              { pageBoardList.map((item) => (<BoardListItem item={item}/>)) }
+            </div>) 
+            : 
+            (<div className='my-page-bottom-board-list-nothing'>게시물이 없습니다.</div>)  }
           <div className='my-page-bottom-write-box'>
-            <div className='my-page-bottom-write-button'>
+            <div className='my-page-bottom-write-button' onClick={onWriteButtonClickHandler}>
               <div className='my-page-edit-icon'></div>
               <div className='my-page-bottom-write-button-text'>글쓰기</div>
             </div>
           </div>
         </div>
+        { boardCount !== 0 && (
         <Pagination  
           totalPage={totalPage}
           currentPage={currentPage}
@@ -118,6 +162,7 @@ export default function MyPage() {
           onNextClickHandler={onNextClickHandler}
           onPreviousClickHandler={onPreviousClickHandler}
         />
+        )}
       </div>
     );
   }

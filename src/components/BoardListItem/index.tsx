@@ -2,10 +2,10 @@ import React from 'react'
 import './style.css';
 import { boardListItemMock } from 'src/mocks';
 import { useNavigate } from 'react-router-dom';
-import { CurrentListResponseDto, SearchListResponseDto } from 'src/interfaces/response';
+import { CurrentListResponseDto, MyPageListResponseDto, SearchListResponseDto } from 'src/interfaces/response';
 
 interface Props {  //속성이 같으면 받아짐 // 자바는 클래스가 다르면 안 받아짐 // 혹시 모르니 다 받게 해둠 
-  item: CurrentListResponseDto | SearchListResponseDto;
+  item: CurrentListResponseDto | SearchListResponseDto | MyPageListResponseDto;
 }
 
 export default function BoardListItem({item}: Props) {
