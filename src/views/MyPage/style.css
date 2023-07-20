@@ -1,0 +1,65 @@
+.my-page-top {
+    padding: 40px 120px;
+}
+
+.my-page-top-container {
+    display: flex;
+}
+
+.my-page-top-profile-box {
+    width: 120px;
+    height: 120px;
+}
+
+.my-page-top-profile {
+    border-radius: 120px;
+    width: 120px;
+    height: 120px;
+
+    background-position: 50% 50%;
+    background-size: 100% 100%;
+}
+
+.my-page-top-profile:hover {
+    box-shadow: 5px 5px 5px 5px;
+}
+
+.my-page-top-info-box {
+    margin-left: 10px;
+}
+
+.my-page-info-nickname-container {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.my-page-info-nickname {
+    margin-right: 10px;
+
+    color: rgba(0,0,0,0.7);
+
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 100%;
+}
+
+.my-page-info-nickname-button {
+    border-radius: 24px;
+
+    width: 24px;
+    height: 24px;
+}
+
+.my-page-info-nickname-button:hover {
+    cursor: pointer;
+    background-color: rgba(0,0,0,0.05);
+}
+
+.my-page-edit-icon {
+    width: 24px;
+    height: 24px;
+
+    background-image: url(asset/write_icon.png);
+    background-position: 50% 50%;
+    background-size: 100% 100%;
+}

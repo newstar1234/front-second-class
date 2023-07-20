@@ -15,25 +15,25 @@ import { usePagination } from 'src/hooks';
 // description: 메인 화면 컴포넌트 //
 export default function Main() {
 
-  //               function                  // 
+  //                function                // 
   // description: 페이지 이동을 위한 네비게이터 함수 //
   const navigator = useNavigate();
 
-  //        component        // 
+  //                component                // 
   // description: 메인 화면의 상단 //
   const MainTop = () => {
 
-    //        state           // 
+    //                state                // 
     // description: 인기 게시물 리스트 상태 // 
     const [top3List, setTop3List] = useState<Top3ListResponseDto[]>([]);
     
-    //       effect      // 
+    //                effect                // 
     // description: 첫 시작 시 인기 게시물 데이터 불러오기 // 
     useEffect( () => {
       if(!top3List.length) setTop3List(top3ListMock);
     }, [] );
 
-    //       render       // 
+    //                render                // 
     return (
       <div className='main-top'>
         <div className='main-top-text-container'>
@@ -50,11 +50,11 @@ export default function Main() {
       )
   }
 
-  //          component          //
+  //                component               //
   // description: 메인화면 하단 // 
   const MainBottom = () => {
 
-    // state //
+    //            state             //
     // description: 최신 게시물 리스트 상태 // 
     const [currentList, setCurrentList] = useState<CurrentListResponseDto[]>([]);
     // description: 인기 검색어 리스트 상태 //
@@ -64,13 +64,13 @@ export default function Main() {
     // 두 줄로 생성시 두번 호출되서 작동이 안됨
     const { totalPage, currentPage, currentSection, onPageClickHandler, onNextClickHandler, onPreviousClickHandler, changeSection } = usePagination();
  
-    // event handler // 
+    //             event handler            // 
     // description: 인기 검색어 클릭 이벤트 //
     const onPopularClickHandler = (word:string) => {
       navigator(`/search/${word}`);
     }
 
-    //        effect        //
+    //              effect              //
     // description: 첫 시작시 인기 검색어 리스트 불러오기 //
     useEffect(() => {
       if(!popularList.length) setPopularList(popularWordListMock);
@@ -82,7 +82,7 @@ export default function Main() {
       if(!currentList.length) setCurrentList(currentBoardListMock);
     }, [currentSection]);
 
-    //        render        // 
+    //              render              // 
     return(
       <div className='main-bottom'>
         <div className='main-bottom-text'>최신 게시물</div>
@@ -109,7 +109,7 @@ export default function Main() {
     )
   }
 
-  //         render         //
+  //              render             //
   return (
     <div  id='main-wrapper'>
       <MainTop />

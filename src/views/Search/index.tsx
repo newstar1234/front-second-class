@@ -9,11 +9,11 @@ import { getPagination } from 'src/utils';
 import Pagination from 'src/components/Pagination';
 import { usePagination } from 'src/hooks';
 
-// component //
+//            component             //
 // description : 검색화면 // 
 export default function Search() {
 
-  // state // 
+  //             state             // 
   // description :  검색어 path parameter 상태 //
   const { searchWord } = useParams();  // 검색어 '안녕하세요' 
   // description : 게시물 수를 저장하는 상태 // 
@@ -30,7 +30,7 @@ export default function Search() {
   // pagination 사용시 usePagination 만들어서 불러주면 값 사용가능 
 
 
-  // function //
+  //            function            //
   //description : 페이지 이동을 위한 네이게이터 함수 //
   const navigator = useNavigate();
 
@@ -43,13 +43,13 @@ export default function Search() {
     setPageBoardList(pageBoardList);  //5개 잘라서 넣기
   }
 
-  //           event handler           //
+  //              event handler             //
   // description : 연관 검색어 클릭 이벤트  //
   const onRelationClickHandler = (word: string) => {
     navigator(`/search/${word}`);
   }
 
-  //        effect          // 
+  //              effect              // 
   //  description: 검색어 상태가 바뀔 때마다 해당 검색어의 검색 결과 불러오기 //
   useEffect(() => {
     setSearchList(searchBoardListMock);
@@ -73,7 +73,7 @@ export default function Search() {
   }, [currentPage]);
 
 
-  //        render         // 
+  //              render              // 
   return (
     <div id='search-wrapper'>
       <div className='search-text-container'>
@@ -82,17 +82,19 @@ export default function Search() {
         <div className='search-text-emphasis'>{boardCount}</div>
       </div>
       <div className='search-container'>
-        { boardCount ? (<div className='search-board-list'>
+        { boardCount ? (
+        <div className='search-board-list'>
           { pageBoardList.map( (item) => (<BoardListItem item={item} />) ) }
-        </div>) : (<div className='search-board-list-nothing'>검색 결과가 없습니다.</div>) }
-        
+        </div>
+        ) : (
+        <div className='search-board-list-nothing'>검색 결과가 없습니다.</div>
+        )}
         <div className='search-relation-box'>
           <div className='search-relation-card'>
             <div className='search-relation-text'>관련 검색어</div>
               { relationList.length ? (<div className='search-relation-list'>
               {relationList.map( (item) => (<div className='relation-chip' onClick={ () => onRelationClickHandler(item) } >{item}</div>) )}
             </div>) : (<div className='search-relation-list-nothing'>관련 검색어가 없습니다.</div>) }
-
           </div>
         </div>
       </div>
