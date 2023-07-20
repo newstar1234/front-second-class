@@ -4,6 +4,7 @@
 
 .my-page-top-container {
     display: flex;
+    align-items: center;
 }
 
 .my-page-top-profile-box {
@@ -21,11 +22,11 @@
 }
 
 .my-page-top-profile:hover {
-    box-shadow: 5px 5px 5px 5px;
+    box-shadow: 5px 5px 5px;
 }
 
 .my-page-top-info-box {
-    margin-left: 10px;
+    margin-left: 25px;
 }
 
 .my-page-info-nickname-container {
@@ -62,4 +63,12 @@
     background-image: url(asset/write_icon.png);
     background-position: 50% 50%;
     background-size: 100% 100%;
+}
+
+.my-page-info-email {
+    color: rgba(0,0,0,0.4);
+
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 100%;
 }
