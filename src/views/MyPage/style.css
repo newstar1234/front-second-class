@@ -44,6 +44,22 @@
     line-height: 100%;
 }
 
+.my-page-info-nickname-input {
+    margin-right: 10px;
+    padding: 0;
+
+    color: rgba(0,0,0,0.7);
+
+    font-family: 'Pretendard';
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 100%;
+
+    border: none;
+    background: none;
+    outline: none;
+}
+
 .my-page-info-nickname-button {
     border-radius: 24px;
 
@@ -69,6 +85,61 @@
     color: rgba(0,0,0,0.4);
 
     font-size: 16px;
+    font-weight: 500;
+    line-height: 100%;
+}
+
+.my-page-bottom {
+    padding: 40px 120px;
+
+    background-color: rgba(0,0,0,0.05);
+}
+
+.my-page-bottom-text {
+    margin-bottom: 20px;
+
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 100%;
+}
+
+.my-page-bottom-text-emphasis {
+    font-weight: 700;
+}
+
+.my-page-bottom-container {
+    display: flex;
+}
+
+.my-page-bottom-board-list {
+    flex: 8;
+}
+
+.my-page-bottom-write-box {
+    margin-left: 24px;
+
+    flex: 4;
+}
+
+.my-page-bottom-write-button {
+    height: 76px;
+
+    background-color: #ffffff;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.my-page-bottom-write-button:hover {
+    cursor: pointer;
+    background-color: rgba(0,0,0,0.08);
+}
+
+.my-page-bottom-write-button-text {
+    margin-left: 6px;
+
+    font-size: 18px;
     font-weight: 500;
     line-height: 100%;
 }
