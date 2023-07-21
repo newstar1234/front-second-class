@@ -1,3 +1,192 @@
 #board-detail-wrapper {
     padding: 100px 222px; 
+}  
+
+.board-detail-top {
+    margin-bottom: 40px;
+}
+
+.board-detail-title-container {
+    margin-bottom: 20px;
+}
+
+.board-detail-title {
+    font-size: 32px;
+    font-weight: 500;
+    line-height: 100%;
+}
+
+.board-detail-meta-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.board-detail-meta-left {
+    display: flex;
+
+    align-items: center;
+}
+
+.board-detail-writer-profile-image {
+    border-radius: 32px;
+    width: 32px;
+    height: 32px;
+    
+    background-position: 50% 50%;
+    background-size: 100% 100%;
+    background-color: aquamarine;
+}
+
+.board-detail-writer-nickname {
+    margin-left: 8px;
+    color: rgba(0,0,0,0.7);
+
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 100%;
+}
+
+.board-detail-write-date {
+    margin-left: 8px;
+    color: rgba(0,0,0,0.4);
+
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 100%;
+}
+
+.board-detail-meta-right {
+    display: flex;
+
+    align-items: center;
+}
+
+.board-detail-more-button {
+    border-radius: 24px;
+
+    width: 24px;
+    height: 24px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.board-detail-more-button:hover {
+    cursor: pointer;
+    background-color: rgba(0,0,0,0.08);
+}
+
+.more-icon {
+    width: 21px;
+    height: 21px;
+
+    background-image: url(asset/more.png);
+    background-position: 50% 50%;
+    background-size: 100% 100%;
+}
+
+.board-detail-middle {
+    margin-top: 40px;
+}
+
+.board-detail-content {
+    color: rgba(0,0,0,0.7);
+    
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 150%;
+}
+
+.board-detail-image-box {
+    margin-top: 20px;
+}
+
+.board-detail-image {
+    width: 100%;
+}
+
+.board-detail-bottom {
+    margin-top: 20px;
+
+    display: flex;
+    align-items: center;
+}
+
+.board-detail-bottom-item {
+    margin-right: 20px;
+    
+    display: flex;
+    align-items: center;
+}
+
+.board-detail-bottom-button {
+    border-radius: 24px;
+
+    width: 24px;
+    height: 24px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.board-detail-bottom-button:hover {
+    cursor: pointer;
+    background-color: rgba(0,0,0,0.08);
+}
+
+.favorite-icon {
+    width: 21px;
+    height: 21px;
+
+    background-image: url(asset/favorite_light.png);
+    background-position: 50% 50%;
+    background-size: 100% 100%;
+}
+
+.favorite-fill-icon {
+    width: 21px;
+    height: 21px;
+
+    background-image: url(asset/favorite_fill.png);
+    background-position: 50% 50%;
+    background-size: 100% 100%;
+}
+
+.comment-icon {
+    width: 21px;
+    height: 21px;
+
+    background-image: url(asset/chat_light.png);
+    background-position: 50% 50%;
+    background-size: 100% 100%;
+}
+
+.down-icon {
+    width: 21px;
+    height: 21px;
+
+    background-image: url(asset/expand_down_light.png);
+    background-position: 50% 50%;
+    background-size: 100% 100%;
+}
+
+.up-icon {
+    width: 21px;
+    height: 21px;
+
+    background-image: url(asset/expand_up_light.png);
+    background-position: 50% 50%;
+    background-size: 100% 100%;
+}
+
+.board-detail-bottom-text {
+    margin: 0 6px;
+
+    color: rgba(0,0,0,0.7);
+
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 100%;
 }
