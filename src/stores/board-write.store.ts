@@ -14,5 +14,9 @@ const useStore = create<BoardWirteStore>((set) => ({
     boardTitle: '',
     boardContent: '',
     boardImage: null,
-    
+    setBoardTitle: (boardTitle) => set((state) => ({...state, boardTitle})),
+    setBoardContent: (boardContent) => set((state) => ({ ... state, boardContent})),
+    setBoardImage: (boardImage) => set((state) => ({...state, boardImage}))
 }));
+
+export default useStore;
