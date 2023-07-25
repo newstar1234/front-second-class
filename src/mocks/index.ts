@@ -327,3 +327,36 @@ export const boardDetailMock = {
     boardImage: 'https://mblogthumb-phinf.pstatic.net/MjAyMDAxMTJfMjUz/MDAxNTc4Nzk0OTU3MzU0.tNgyHCs2j_dI-q0ceFtuJwaVwqHBs9cFC6ghB5fuSocg.T3saRbF6GlBgTCtf4n5cU2sOGJZDBskprT05kNiNc9gg.JPEG.dream_things/1578794957986.jpg?type=w800',
     boardNumber: 1,
 }
+
+export const likeListMock = [
+    {
+        likeUserProfileImage: 'https://thumb.mtstarnews.com/06/2023/06/2023062107375547872_1.jpg',
+        likeUserNickname: 'iu',
+        likeUserEmail: 'email@email.com',
+    },
+    {
+        likeUserProfileImage: 'https://thumb.mtstarnews.com/06/2023/06/2023062107375547872_1.jpg',
+        likeUserNickname: 'irene',
+        likeUserEmail: 'email@email.com',
+    },
+    {
+        likeUserProfileImage: 'https://thumb.mtstarnews.com/06/2023/06/2023062107375547872_1.jpg',
+        likeUserNickname: 'wendy',
+        likeUserEmail: 'email@email.com',
+    },
+    {
+        likeUserProfileImage: 'https://thumb.mtstarnews.com/06/2023/06/2023062107375547872_1.jpg',
+        likeUserNickname: 'exy',
+        likeUserEmail: 'email@email.com',
+    },
+    {
+        likeUserProfileImage: 'https://thumb.mtstarnews.com/06/2023/06/2023062107375547872_1.jpg',
+        likeUserNickname: 'kai',
+        likeUserEmail: 'email@email.com',
+    },
+    {
+        likeUserProfileImage: 'https://thumb.mtstarnews.com/06/2023/06/2023062107375547872_1.jpg',
+        likeUserNickname: 'mark',
+        likeUserEmail: 'email@email.com',
+    },
+]
