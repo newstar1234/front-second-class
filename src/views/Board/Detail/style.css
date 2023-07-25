@@ -19,6 +19,8 @@
 .board-detail-meta-container {
     display: flex;
     justify-content: space-between;
+
+    position: relative;
 }
 
 .board-detail-meta-left {
@@ -58,7 +60,58 @@
 .board-detail-meta-right {
     display: flex;
 
+    align-items: center; 
+}
+
+.more-button-group {
+    position: absolute;
+    top: -98px;
+    right: 0;
+    box-shadow: 0px 4px 16px 0px rgba(0,0,0,0.25);
+}
+
+.more-button {
+    padding: 10px 17px;
+
+    width: 109px;
+    height: 20px;
+
+    display: flex;
+    justify-content: center;
     align-items: center;
+
+    color: rgb(0,0,0,0.5);
+
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 100%;
+}
+
+.more-button:hover {
+    cursor: pointer;
+    background-color: rgba(0,0,0,0.08);
+}
+
+.more-button-red {
+    padding: 10px 17px;
+
+    width: 109px;
+    height: 20px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: rgb(255,0,0,0.5);
+
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 100%;
+}
+
+.more-button-red:hover {
+    cursor: pointer;
+    background-color: rgba(0,0,0,0.08);
 }
 
 .board-detail-more-button {
@@ -189,4 +242,7 @@
     font-size: 16px;
     font-weight: 500;
     line-height: 100%;
+
+    display: flex;
+    align-items: center;
 }
