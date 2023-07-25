@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import './style.css';
-import { BoardDetailResponseDto, LikeListResponseDto } from 'src/interfaces/response';
-import { boardDetailMock, likeListMock } from 'src/mocks';
+import { BoardDetailResponseDto, CommentListResponseDto, LikeListResponseDto } from 'src/interfaces/response';
+import { boardDetailMock, commentListMock, likeListMock } from 'src/mocks';
 import { useParams } from 'react-router-dom';
+import CommentListItem from 'src/components/CommentListItem';
+import Pagination from 'src/components/Pagination';
+import { usePagination } from 'src/hooks';
 
 //              component             //
 // description :  게시물 상세 화면 //
@@ -11,12 +14,14 @@ export default function BoardDetail() {
   //              state             //
   // description : 게시물 번호 상태 //
   const { boardNumber } = useParams();
+  // description :   //
+  const { } = usePagination();
   // description : 게시물 정보 상태 //
   const [board, setBoard] = useState<BoardDetailResponseDto | null>(null);
   // description : 게시물 좋아요 회원 리스트 상태 //
   const [likeList, setLikeList] = useState<LikeListResponseDto[]>([]);
   // description : 댓글 리스트 상태 //
-  const [commentList, setCommentList] = useState<any[]>([]);
+  const [commentList, setCommentList] = useState<CommentListResponseDto[]>([]);
   // description : 좋아요 리스트 컴포넌트 출력 상태 //
   const [showLikeList, setShowLikeList] = useState<boolean>(false);
 
@@ -135,7 +140,22 @@ export default function BoardDetail() {
   const Comments = () => {
 
     return(
-      <div></div>
+      <div className='comment-list-box'>
+        <div className='comment-list-top'>
+          <div className='comment-list-title'>댓글 <span className='comment-list-title-emphasis'>{commentList.length}</span></div>
+          <div className='comment-list-container'>
+            { commentList.map((item) => (<CommentListItem item = {item}/>)) }
+          </div>
+        </div>
+        <div className='divider'></div>
+        <Pagination />
+        <div className='comment-box'>
+          <textarea className='comment-textarea' rows={3}></textarea>
+          <div className='comment-button-box'>
+            <div className='comment-button'>댓글달기</div>
+          </div>
+        </div>
+      </div>
     );
   }
 
@@ -144,7 +164,7 @@ export default function BoardDetail() {
   useEffect(() => {
     setBoard(boardDetailMock);
     setLikeList(likeListMock);
-    setCommentList([]);
+    setCommentList(commentListMock);
   }, [boardNumber]);
 
   //              render              //

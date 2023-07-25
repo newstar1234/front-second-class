@@ -4,5 +4,6 @@ import SearchListResponseDto from "./search-list.response.dto";
 import MyPageListResponseDto from "./my-page.list.response.dto";
 import BoardDetailResponseDto from "./board-detail.response.dto";
 import LikeListResponseDto from "./like-list.response.dto";
+import CommentListResponseDto from "./comment-list.response.dto";
 
-export type { Top3ListResponseDto, CurrentListResponseDto, SearchListResponseDto, MyPageListResponseDto, BoardDetailResponseDto, LikeListResponseDto }; 
+export type { Top3ListResponseDto, CurrentListResponseDto, SearchListResponseDto, MyPageListResponseDto, BoardDetailResponseDto, LikeListResponseDto, CommentListResponseDto }; 
