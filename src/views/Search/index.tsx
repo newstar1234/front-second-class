@@ -58,13 +58,13 @@ export default function Search() {
     
     getPageBoardList();
 
-    changeSection(searchBoardListMock.length);
+    changeSection(searchBoardListMock.length, COUNT_BY_PAGE);
    
   }, [searchWord]);
 
   // description: 현재 섹션이 바뀔 때마다 페이지 리스트 변경 //
   useEffect(() => {
-    changeSection(searchBoardListMock.length);
+    changeSection(searchBoardListMock.length, COUNT_BY_PAGE);
   }, [currentSection]);
 
   // description: 현재 페이지가 바뀔 때마다 검색 게시물 분류하기  //

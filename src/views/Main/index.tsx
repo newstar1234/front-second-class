@@ -78,7 +78,7 @@ export default function Main() {
 
     // description: 현재 섹션이 바뀔 때마다 페이지 리스트 변경 및 최신 게시물 불러오기 //
     useEffect(() => {
-      changeSection(72);
+      changeSection(72, COUNT_BY_PAGE);
       if(!currentList.length) setCurrentList(currentBoardListMock);
     }, [currentSection]);
 

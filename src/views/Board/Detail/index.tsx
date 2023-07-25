@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, ChangeEvent } from 'react'
 import './style.css';
 import { BoardDetailResponseDto, CommentListResponseDto, LikeListResponseDto } from 'src/interfaces/response';
 import { boardDetailMock, commentListMock, likeListMock } from 'src/mocks';
@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom';
 import CommentListItem from 'src/components/CommentListItem';
 import Pagination from 'src/components/Pagination';
 import { usePagination } from 'src/hooks';
+import { COUNT_BY_PAGE_COMMENT } from 'src/constants';
 
 //              component             //
 // description :  게시물 상세 화면 //
@@ -15,17 +16,29 @@ export default function BoardDetail() {
   // description : 게시물 번호 상태 //
   const { boardNumber } = useParams();
   // description :   //
-  const { } = usePagination();
+  const { totalPage, currentPage, currentSection, onPageClickHandler, onPreviousClickHandler, onNextClickHandler, changeSection } = usePagination();
   // description : 게시물 정보 상태 //
   const [board, setBoard] = useState<BoardDetailResponseDto | null>(null);
   // description : 게시물 좋아요 회원 리스트 상태 //
   const [likeList, setLikeList] = useState<LikeListResponseDto[]>([]);
   // description : 댓글 리스트 상태 //
   const [commentList, setCommentList] = useState<CommentListResponseDto[]>([]);
+  // description : 현재 페이지에서 보여줄 댓글 리스트 상태 //
+  const [pageCommentList, setPageCommentList] = useState<CommentListResponseDto[]>([]);
   // description : 좋아요 리스트 컴포넌트 출력 상태 //
   const [showLikeList, setShowLikeList] = useState<boolean>(false);
+  // description : 댓글 리스트 컴포넌트  출력 상태 //
+  const [showCommentList, setShowCommentList] = useState<boolean>(false);
 
   //              function              //
+  // description : 현재 페이지의 댓글 리스트 분류 함수 //
+  const getPageCommentList = () => {
+    const lastIndex = commentListMock.length > COUNT_BY_PAGE_COMMENT * currentPage ? 
+                      COUNT_BY_PAGE_COMMENT * currentPage : commentListMock.length;
+    const startIndex = COUNT_BY_PAGE_COMMENT * (currentPage -1);
+    const pageCommentList = commentListMock.slice(startIndex, lastIndex);
+    setPageCommentList(pageCommentList);
+  }
 
   //              event handler              //
 
@@ -55,6 +68,10 @@ export default function BoardDetail() {
   // description : 좋아요 리스트 펼치기 클릭 이벤트 //
   const onShowLikeListButtonClickHandler = () => {
     setShowLikeList(!showLikeList);
+  }
+  // description : 댓글 리스트 펼치기 클릭 이벤트 //
+  const onShowCommentListButtonClickHandler = () => {
+    setShowCommentList(!showCommentList);
   }
 
   //              effect              //
@@ -111,8 +128,8 @@ export default function BoardDetail() {
               <div className='comment-icon'></div>
             </div>
             <div className='board-detail-bottom-text'>{`댓글 ${commentList.length}`}</div>
-            <div className='board-detail-bottom-button'>
-              <div className='down-icon'></div>
+            <div className='board-detail-bottom-button' onClick={onShowCommentListButtonClickHandler}> {/** 댓글 펼치기  */}
+              { showCommentList ? (<div className='up-icon'></div>) : (<div className='down-icon'></div>) }
             </div>
           </div>
         </div>
@@ -138,21 +155,42 @@ export default function BoardDetail() {
   }
   // description : 댓글 컴포넌트 //
   const Comments = () => {
+    //            state            //
+    // description : 사용자 댓글 입력 상태 //
+    const [comment, setComment] =useState<string>('');
+
+    //            event handler            //
+    // description : 사용자 댓글 입력 변경 이벤트 //
+    const onCommentChangeHandler = (event:ChangeEvent<HTMLTextAreaElement>) => {
+      setComment(event.target.value);
+    }
+
 
     return(
       <div className='comment-list-box'>
         <div className='comment-list-top'>
           <div className='comment-list-title'>댓글 <span className='comment-list-title-emphasis'>{commentList.length}</span></div>
           <div className='comment-list-container'>
-            { commentList.map((item) => (<CommentListItem item = {item}/>)) }
+            { commentList.map((item) => (<CommentListItem item = {item}/>)) } 
           </div>
         </div>
         <div className='divider'></div>
-        <Pagination />
+        { commentList.length !== 0 && (
+          <Pagination 
+            totalPage={totalPage} 
+            currentPage={currentPage} 
+            onNextClickHandler={onNextClickHandler} 
+            onPageClickHandler={onPageClickHandler} 
+            onPreviousClickHandler={onPreviousClickHandler}
+          />
+        )}
         <div className='comment-box'>
-          <textarea className='comment-textarea' rows={3}></textarea>
+          <textarea className='comment-textarea' placeholder='댓글을 작성해주세요.' rows={3} value={comment} onChange={onCommentChangeHandler}></textarea>
           <div className='comment-button-box'>
-            <div className='comment-button'>댓글달기</div>
+            { comment ? 
+            (<div className='comment-button'>댓글달기</div>) 
+            : 
+            (<div className='comment-disable-button'>댓글달기</div>) }
           </div>
         </div>
       </div>
@@ -164,15 +202,28 @@ export default function BoardDetail() {
   useEffect(() => {
     setBoard(boardDetailMock);
     setLikeList(likeListMock);
-    setCommentList(commentListMock);
+    setCommentList(commentListMock); 
+
+    getPageCommentList();
+
+    changeSection(commentListMock.length, COUNT_BY_PAGE_COMMENT);
   }, [boardNumber]);
+  // description : 현재 페이지가 바뀔 떄마다 검색 게시물 분류하기 //
+  useEffect(() => {
+    getPageCommentList();
+  }, [currentPage]);
+  // description : 현재 페이지가 바뀔 때마다 페이지 리스트 변경 //
+  //! 페이지네이션 다시 보기 3까지 나와야 함 
+  useEffect (() => {
+    changeSection(commentListMock.length, COUNT_BY_PAGE_COMMENT);
+  }, [currentSection]);
 
   //              render              //
   return (
     <div id='board-detail-wrapper'>
       <Board />
-      { showLikeList && (<LikeList />) }
-      <Comments />
+      { showLikeList && (<LikeList />) } {/** 좋아요 뿌려주기 */}
+      { showCommentList && (<Comments />) }
     </div>
   )
 }

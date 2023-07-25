@@ -132,7 +132,7 @@ export default function MyPage() {
 
   // description : 현재 섹션이 바뀔 때마다 페이지 리스트 변경 //
   useEffect (() => {
-    changeSection(MyPageBoardListMock.length);
+    changeSection(MyPageBoardListMock.length, COUNT_BY_PAGE);
   }, [currentSection]);
   
 
