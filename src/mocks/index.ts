@@ -1,4 +1,11 @@
 //! 게시판 리스트 아이템 목(임시) 데이터 //
+
+export const userMock = {
+    email: 'email@email.com',
+    nickname: '푸뚠뚠',
+    profileImage: 'https://thumb.mtstarnews.com/06/2023/06/2023062107375547872_1.jpg',
+}
+
 export const boardListItemMock = {
     writerProfileImage: 'https://thumb.mtstarnews.com/06/2023/06/2023062107375547872_1.jpg',
     writerNickName: '비가너무싫음',

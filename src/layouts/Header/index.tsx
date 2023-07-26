@@ -1,8 +1,8 @@
 import React from 'react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './style.css';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useBoardWriteStore } from 'src/stores';
+import { useBoardWriteStore, useUserStore } from 'src/stores';
 
 //              component             //
 // description : Header 레이아웃 //
@@ -12,11 +12,14 @@ export default function Header() {
   //description : 검색 아이콘 클릭 상태 //
   const [searchState, setSearchState] = useState<boolean>(false);
   //description : 로그인 상태 //
-  const [login, setLogin] = useState<boolean>(true);
+  const [login, setLogin] = useState<boolean>(false);
   //description : url 경로 상태 //
   const { pathname } = useLocation();
+  // description : 로그인 유저 정보 상태  //
+  const { user, setUser } = useUserStore();
   //description : 게시물 작성 데이터 상태 //
   const { boardTitle, boardContent } = useBoardWriteStore();
+
   //              function              //
   //description : 페이지 이동을 위한 네비게이터 함수 //
   const navigator = useNavigate();
@@ -48,7 +51,8 @@ export default function Header() {
   }
   //description : 로그아웃 버튼 클릭 이벤트 // 
   const onSignOutButtonClickHandler = () => {
-    setLogin(false);
+    setLogin(false); //로그인 false
+    setUser(null);  // 유저 정보 없음
     navigator('/');
   }
   //description : 업로드 버튼 클릭 이벤트 //
@@ -56,6 +60,10 @@ export default function Header() {
 
   }
   //              effect              //
+  useEffect(() => {
+    setLogin(user !== null);
+  }, [user]);
+  // 스코프 user로 잡음
 
   //              render              //
   return (

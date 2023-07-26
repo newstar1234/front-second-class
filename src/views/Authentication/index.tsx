@@ -2,9 +2,11 @@ import React, { useState } from 'react'
 import './style.css';
 import InputBox from 'src/components/InputBox';
 import { INPUT_ICON, emailPattern, telNumberPattern } from 'src/constants';
-import { signInMock } from 'src/mocks';
+import { signInMock, userMock } from 'src/mocks';
 import { useNavigate } from 'react-router-dom';
 import { Address, useDaumPostcodePopup } from 'react-daum-postcode';
+import { useUserStore } from 'src/stores';
+
 
 export default function Authentication() {
 
@@ -12,14 +14,17 @@ export default function Authentication() {
 
   const navigator = useNavigate();
 
+  //              component             //
   const SignInCard = () => {
 
     const [showPassword, setShowPassword] = useState<boolean>(false);
     const [error, setError] =useState<boolean>(false);
 
-    const [email, setEmail]=useState<string>('');
-    const [password, setPassword]=useState<string>('');
-    
+    const [email, setEmail]=useState<string>(signInMock.email);
+    const [password, setPassword]=useState<string>(signInMock.password);
+    // 로그인 정보가 맞으면 user로 정보 전달
+    const {setUser} = useUserStore();
+
     const onPasswordIconClicHandler = () => {
       setShowPassword(!showPassword);
     }
@@ -34,6 +39,7 @@ export default function Authentication() {
         setError(true);
         return;
       }
+      setUser(userMock); // 로그인 정보 가져오기
       navigator('/');
     }
 
