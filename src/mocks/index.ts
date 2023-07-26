@@ -1,5 +1,4 @@
 //! 게시판 리스트 아이템 목(임시) 데이터 //
-
 export const userMock = {
     email: 'email@email.com',
     nickname: '푸뚠뚠',
@@ -406,3 +405,9 @@ export const likeListMock = [
         likeUserEmail: 'email@email.com',
     },
 ]
+
+export const boardUpdateMock = {
+    boardTitle: '아무거나나나',
+    boardContent: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis at aliquet tortor. Proin vitae lacinia nunc. Maecenas a tortor turpis. Praesent accumsan egestas finibus. Proin sagittis euismod sagittis. Fusce mauris ex, interdum et laoreet a, mollis eu odio. Integer vel nulla eu augue dapibus porta sodales ac sapien. Fusce iaculis, neque id bibendum placerat, quam nisl efficitur diam, vitae vehicula arcu odio sed mauris. Integer orci elit, rutrum nec tortor sed, ultrices pretium nulla. Sed suscipit tristique lacus, eu rhoncus dolor aliquam ac. Aliquam non lorem leo.',
+    boardImage: 'https://thumb.mtstarnews.com/06/2023/06/2023062107375547872_1.jpg',
+}
