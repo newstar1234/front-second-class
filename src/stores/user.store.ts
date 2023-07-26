@@ -1,5 +1,5 @@
-import UserResponseDto from "src/interfaces/response/user.response.dto";
 import { create } from "zustand";
+import { UserResponseDto } from "src/interfaces/response";
 
 interface UserStore {
     user: UserResponseDto | null
@@ -8,7 +8,7 @@ interface UserStore {
 
 const useStore = create<UserStore>((set) => ({
     user: null,
-    setUser: (user) => set((state) => ({ ...state, user })),
+    setUser: (user) => set((state) => ({ ...state, user })), // ...state = user, setUser 가 들어있는것 스프레드함수라고 함
 })); //매개변수 함수로 전달
 
 export default useStore;

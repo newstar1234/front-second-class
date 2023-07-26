@@ -1,4 +1,3 @@
-import React from 'react'
 import './style.css';
 
 interface Props {
@@ -9,7 +8,21 @@ interface Props {
     onNextClickHandler: () => void;
 }
 
+//              component              //
+// description : 페이징 처리 컴포넌트 //
 export default function Pagination({totalPage, currentPage, onPageClickHandler, onPreviousClickHandler, onNextClickHandler}: Props) {
+
+    //              state             //
+
+    //              function              //
+
+    //              event handler              //
+
+    //              component              //
+
+    //              effect              //
+    
+    //              render              //    
   return (
     
     <div className='pagination'>

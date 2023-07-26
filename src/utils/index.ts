@@ -1,4 +1,4 @@
-import { COUNT_BY_PAGE, COUNT_BY_SECTION, PAGE_BY_SECTION } from "src/constants";
+import { PAGE_BY_SECTION } from "src/constants";
 
 export const getPagination = (boardCount: number, currentSection:number, countByPage: number) => {
     const section = Math.ceil(boardCount / (PAGE_BY_SECTION * countByPage) ); 

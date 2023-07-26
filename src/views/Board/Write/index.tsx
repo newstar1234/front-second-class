@@ -1,6 +1,6 @@
-import React, { ChangeEvent, useRef, useState } from 'react'
-import './style.css';
+import { ChangeEvent, useRef, useState } from 'react'
 import { useBoardWriteStore } from 'src/stores';
+import './style.css';
 
 //              component             //
 // description : 게시물 쓰기 화면 //

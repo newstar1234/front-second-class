@@ -1,13 +1,13 @@
-import React, { useState, useEffect, ChangeEvent } from 'react'
-import './style.css';
-import { BoardDetailResponseDto, CommentListResponseDto, LikeListResponseDto } from 'src/interfaces/response';
-import { boardDetailMock, commentListMock, likeListMock } from 'src/mocks';
+import { useState, useEffect, ChangeEvent } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
+import { BoardDetailResponseDto, CommentListResponseDto, LikeListResponseDto } from 'src/interfaces/response';
+import { usePagination } from 'src/hooks';
+import { useUserStore } from 'src/stores';
 import CommentListItem from 'src/components/CommentListItem';
 import Pagination from 'src/components/Pagination';
-import { usePagination } from 'src/hooks';
+import { boardDetailMock, commentListMock, likeListMock } from 'src/mocks';
 import { COUNT_BY_PAGE_COMMENT } from 'src/constants';
-import { useUserStore } from 'src/stores';
+import './style.css';
 
 //              component             //
 // description :  게시물 상세 화면 //
@@ -18,9 +18,9 @@ export default function BoardDetail() {
   const { boardNumber } = useParams();
   // description :   //
   const { totalPage, currentPage, currentSection, onPageClickHandler, onPreviousClickHandler, onNextClickHandler, changeSection } = usePagination();
-
   // description : 로그인 유저 정보 상태 //
   const { user } = useUserStore();
+
   // description : 게시물 정보 상태 //
   const [board, setBoard] = useState<BoardDetailResponseDto | null>(null);
   // description : 게시물 좋아요 회원 리스트 상태 //
@@ -94,7 +94,7 @@ export default function BoardDetail() {
   // description : 게시물 번호 혹은 로그인 유저 정보가 변경되면 실행 //
   useEffect(() => {
     setViewMore(user?.email === board?.writerEmail);
-    const liked = likeList.findIndex((item) => item.likeUserEmail === user?.email);
+    const liked = likeList.findIndex((item) => item.likeUserEmail === user?.email); // findIndex : 배열안의 내용물이 객체일 때 존재하면 그 객체가 배열 안에서 몇번째인지 number 반환
     setFavorite(liked !== -1);
   }, [boardNumber, user]);
 
