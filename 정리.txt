@@ -1,0 +1,28 @@
+import 규칙
+	1. react
+	2. react-router-dom
+	3. interface
+	4. hook / store
+	5. component
+	6. util
+	7. mock
+	8. constant
+	9. ... etc
+
+state 선언 순서
+	라이브러리 관련 상태
+	useRef
+	useParams
+	useStore
+	useHook
+	Props
+	useState
+	
+event handler 순서
+	changeEvent
+	clickEvent
+
+effect 순서
+	scope[ ]갯수
+	
+
