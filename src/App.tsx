@@ -23,8 +23,15 @@ import './App.css';
 
 function App() {
 
-  const path = useLocation();
+  //              state              //
+  // description : 현재 페이지 url 상태 //
+  const { pathname } = useLocation();
 
+  //              function              //
+
+  //              effect              //
+  
+  //              render              //
   return (
   <>
     <Header />
@@ -39,7 +46,7 @@ function App() {
         <Route path='update/:boardNumber' element={<BoardUpdate />} />
       </Route>
     </Routes>
-    { path.pathname !== '/auth' && (<Footer/>) }     
+    { pathname !== '/auth' && (<Footer/>) }     
   </>
   );
 }

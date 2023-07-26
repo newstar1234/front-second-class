@@ -24,8 +24,6 @@ export default function MyPage() {
   const navigator = useNavigate();
 
   //              event handler             //
-  //              effect             //
-  
   
   //              component             //
   // description: 마이페이지 상단 //
@@ -42,13 +40,9 @@ export default function MyPage() {
     // description : 닉네임 변경 버튼 상태 //
     const [nicknameChange, setNicknameChange] = useState<boolean>(false);
     
-
     //              function             //
+
     //              event handler             //
-    // description : 프로필 이미지 선택 시 파일 인풋창 열림 이벤트 //
-    const onProfileClickHandler = () => {
-      fileInputRef.current?.click();
-    }
     // description : 파일 인풋 변경 시 이미지 미리보기 //
     const onImageInputChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
       if(!event.target.files || !event.target.files.length ) return;
@@ -60,13 +54,19 @@ export default function MyPage() {
     const onNicknameChangeHandler = (event:ChangeEvent<HTMLInputElement>) => {
       setNickname(event.target.value);
     }
+
+    // description : 프로필 이미지 선택 시 파일 인풋창 열림 이벤트 //
+    const onProfileClickHandler = () => {
+      fileInputRef.current?.click();
+    }
     // description : 닉네임 변경 버튼 클릭 이벤트 //
     const onNicknameButtonClickHandler = () => {
       setNicknameChange(!nicknameChange);
     }
     
-    //              effect             //
+    //              component             //
 
+    //              effect             //
 
     //              render              //
     return(
@@ -98,14 +98,15 @@ export default function MyPage() {
   const MyPageBottom = () => {
 
   //              state             //
+  // description : 페이지네이션과 관련된 상태 및 함수 //
+  const {totalPage, currentPage, currentSection, onPageClickHandler, onPreviousClickHandler, onNextClickHandler, changeSection} = usePagination();
+  
   // description : 전체 게시물 리스트 상태 //
   const [myPageBoardList, setMyPageBoardList] = useState<MyPageListResponseDto[]>([]);
   // description : 전체 게시물 개수 상태 //
   const [boardCount, setBoardCount] = useState<number>(0);
   // description : 현재 페이지에서 보여줄 게시물 리스트 상태 //
   const [pageBoardList, setPageBoardList] =useState<MyPageListResponseDto[]>([]);
-  // description : 페이지네이션과 관련된 상태 및 함수 //
-  const {totalPage, currentPage, currentSection, onPageClickHandler, onPreviousClickHandler, onNextClickHandler, changeSection} = usePagination();
   
   //              function             //
   // description : 현재 페이지의 게시물 리스트 분류 함수 //
@@ -119,9 +120,12 @@ export default function MyPage() {
   } 
 
   //              event handler             //
+  // description : 글쓰기 버튼 클릭 이벤트 //
   const onWriteButtonClickHandler = () => {
     navigator('/board/write');
   }
+
+  //              component             //
 
   //              effect             //
   // description : 화면 첫 로드시 게시물 리스트 불러오기 //
@@ -139,7 +143,6 @@ export default function MyPage() {
   useEffect (() => {
     changeSection(MyPageBoardListMock.length, COUNT_BY_PAGE);
   }, [currentSection]);
-  
 
     //             render             //
     return(
@@ -173,6 +176,7 @@ export default function MyPage() {
   }
   
   //              effect              //
+  // description : 처음 마이페이지 접근시 로그인이 되어있지 않으면 인증 페이지로 이동 //
   useEffect(() => {
     if(!user) navigator('/auth');
   }, []);

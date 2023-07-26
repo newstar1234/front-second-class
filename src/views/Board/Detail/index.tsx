@@ -16,10 +16,11 @@ export default function BoardDetail() {
   //              state             //
   // description : 게시물 번호 상태 //
   const { boardNumber } = useParams();
-  // description :   //
-  const { totalPage, currentPage, currentSection, onPageClickHandler, onPreviousClickHandler, onNextClickHandler, changeSection } = usePagination();
+  
   // description : 로그인 유저 정보 상태 //
   const { user } = useUserStore();
+  // description : 페이지네이션 관련 상태 및 함수 //
+  const { totalPage, currentPage, currentSection, onPageClickHandler, onPreviousClickHandler, onNextClickHandler, changeSection } = usePagination();
 
   // description : 게시물 정보 상태 //
   const [board, setBoard] = useState<BoardDetailResponseDto | null>(null);
@@ -76,7 +77,6 @@ export default function BoardDetail() {
   const onDeleteButtonClickHandler = () => {
     navigator(`/`);
   }
-
   // description : 좋아요 버튼 클릭 이벤트 //
   const onLikeButtonClickHandler = () => {
     setFavorite(!favorite);
@@ -91,19 +91,18 @@ export default function BoardDetail() {
   }
 
   //              effect              //
-  // description : 게시물 번호 혹은 로그인 유저 정보가 변경되면 실행 //
-  useEffect(() => {
-    setViewMore(user?.email === board?.writerEmail);
-    const liked = likeList.findIndex((item) => item.likeUserEmail === user?.email); // findIndex : 배열안의 내용물이 객체일 때 존재하면 그 객체가 배열 안에서 몇번째인지 number 반환
-    setFavorite(liked !== -1);
-  }, [boardNumber, user]);
-
   // description : 좋아요 리스트가 변경되면 실행 //
   useEffect (() => {
     const liked = likeList.findIndex((item) => item.likeUserEmail === user?.email);
     setFavorite(liked !== -1);
   }, [likeList]);
   //스코프에 likeList 넣어서 쳐다보게 함
+  // description : 게시물 번호 혹은 로그인 유저 정보가 변경되면 실행 //
+  useEffect(() => {
+    setViewMore(user?.email === board?.writerEmail);
+    const liked = likeList.findIndex((item) => item.likeUserEmail === user?.email); // findIndex : 배열안의 내용물이 객체일 때 존재하면 그 객체가 배열 안에서 몇번째인지 number 반환
+    setFavorite(liked !== -1);
+  }, [boardNumber, user]);
 
   //              render              //
     return(
@@ -166,9 +165,19 @@ export default function BoardDetail() {
     );
   }
   
+  //              component             //
   // description : 좋아요 리스트 컴포넌트 //
   const LikeList = () => {
 
+    //              state             //
+
+    //              function             //
+
+    //              event handler             //
+
+    //              effect             //
+
+    //              render             //
     return(
       <div className='like-list-box'>
         <div className='like-list-title'>좋아요 <span className='like-list-title-emphasis'>{likeList.length}</span></div>
@@ -184,11 +193,15 @@ export default function BoardDetail() {
     );
   }
 
+  //              component             //
   // description : 댓글 컴포넌트 //
   const Comments = () => {
+
     //            state            //
     // description : 사용자 댓글 입력 상태 //
     const [comment, setComment] =useState<string>('');
+
+    //              function             //
 
     //            event handler            //
     // description : 사용자 댓글 입력 변경 이벤트 //
@@ -196,7 +209,11 @@ export default function BoardDetail() {
       setComment(event.target.value);
     }
 
+    //              component             //
 
+    //              effect             //
+
+    //              render             //
     return(
       <div className='comment-list-box'>
         <div className='comment-list-top'>

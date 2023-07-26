@@ -15,18 +15,20 @@ import './style.css';
 // description: 메인 화면 컴포넌트 //
 export default function Main() {
 
-  //                function                // 
-  // description: 페이지 이동을 위한 네비게이터 함수 //
-  const navigator = useNavigate();
-
-  //                component                // 
-  // description: 메인 화면의 상단 //
-  const MainTop = () => {
-
     //                state                // 
     // description: 인기 게시물 리스트 상태 // 
     const [top3List, setTop3List] = useState<Top3ListResponseDto[]>([]);
+
+    //                function                // 
+    // description: 페이지 이동을 위한 네비게이터 함수 //
+    const navigator = useNavigate();
+
+    //                event handler                // 
     
+    //                component                // 
+    // description: 메인 화면의 상단 //
+    const MainTop = () => {
+
     //                effect                // 
     // description: 첫 시작 시 인기 게시물 데이터 불러오기 // 
     useEffect( () => {
@@ -55,20 +57,24 @@ export default function Main() {
   const MainBottom = () => {
 
     //            state             //
+    // description: 페이지네이션  관련 상태 및 함수 //
+    // 두 줄로 생성시 두번 호출되서 작동이 안됨 //hooj 상태
+    const { totalPage, currentPage, currentSection, onPageClickHandler, onNextClickHandler, onPreviousClickHandler, changeSection } = usePagination();
+   
     // description: 최신 게시물 리스트 상태 // 
     const [currentList, setCurrentList] = useState<CurrentListResponseDto[]>([]);
     // description: 인기 검색어 리스트 상태 //
     const [popularList, setPopularList] = useState<string[]>([]);
-
-    // description: 페이지네이션  관련 상태 및 함수 //
-    // 두 줄로 생성시 두번 호출되서 작동이 안됨
-    const { totalPage, currentPage, currentSection, onPageClickHandler, onNextClickHandler, onPreviousClickHandler, changeSection } = usePagination();
  
+    //                function              //
+
     //             event handler            // 
     // description: 인기 검색어 클릭 이벤트 //
     const onPopularClickHandler = (word:string) => {
       navigator(`/search/${word}`);
     }
+
+    //              component              //
 
     //              effect              //
     // description: 첫 시작시 인기 검색어 리스트 불러오기 //
@@ -108,6 +114,8 @@ export default function Main() {
       </div>
     )
   }
+
+  //              effect              //
 
   //              render             //
   return (
