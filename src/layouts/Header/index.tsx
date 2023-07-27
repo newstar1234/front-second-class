@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, ChangeEvent } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useBoardWriteStore, useUserStore } from 'src/stores';
 import './style.css';
@@ -8,16 +8,18 @@ import './style.css';
 export default function Header() {
 
   //              state             //
-  //description : 검색 아이콘 클릭 상태 //
-  const [searchState, setSearchState] = useState<boolean>(false);
-  //description : 로그인 상태 //
-  const [login, setLogin] = useState<boolean>(false);
   //description : url 경로 상태 //
   const { pathname } = useLocation();
-  // description : 로그인 유저 정보 상태  //
-  const { user, setUser } = useUserStore();
   //description : 게시물 작성 데이터 상태 //
   const { boardTitle, boardContent, resetBoard } = useBoardWriteStore();
+  // description : 로그인 유저 정보 상태  //
+  const { user, setUser } = useUserStore();
+  //description : 검색 아이콘 클릭 상태 //
+  const [searchState, setSearchState] = useState<boolean>(false);
+  // description : 로그인 상태 //
+  const [login, setLogin] = useState<boolean>(false);
+  // description : 검색어 상태 //
+  const [search, setSearch] = useState<string>('');
 
   //              function              //
   //description : 페이지 이동을 위한 네비게이터 함수 //
@@ -35,6 +37,23 @@ export default function Header() {
   const activeUpload = boardTitle !== ''  && boardContent !== '' ;
 
   //              event handler             //
+  // description : 검색어 변경 이벤트 //
+  const onSearchChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    setSearch(event.target.value);
+  }
+
+  // description : 검색 아이콘 버튼 클릭 이벤트  //
+  const onSearchOpenButtonClickHandler = () => {
+    setSearchState(true);
+  }
+  // description : 검색 버튼 클릭 이벤트 //
+  const onSearchButtonClickHandler = () => {
+    if(!search){
+      alert('검색어를 입력해주세요!');
+      return;
+    }
+    navigator(`/search/${search}`);
+  }
   //description : 로고 클릭 이벤트 //
   const onLogoClickHandler = () => {
     navigator('/');
@@ -62,10 +81,17 @@ export default function Header() {
   }
 
   //              effect              //
+  // description : 로그인 유저 정보가 바뀔 때마다 실행 //
   useEffect(() => {
     setLogin(user !== null);
-  }, [user]);
-  // 스코프 user로 잡음
+  }, [user]);// 스코프 user로 잡음
+  // description : path url이 바뀔 때마다 실행 // path name이 바뀔떄마다 
+  useEffect(() => {
+    if(pathname.indexOf('/search/') === -1) {
+      setSearch('');
+      setSearchState(false);
+    }
+  }, [pathname]);
 
   //              render              //
   return (
@@ -77,22 +103,22 @@ export default function Header() {
       <div className='header-right'>
         {(showSearch) && (searchState ? (
             <div className='header-search-box'>
-              <input className='header-search-input' />
-              <div className='header-icon-box' onClick={() => setSearchState(false)}>
+              <input className='header-search-input' value={search} onChange={onSearchChangeHandler} />
+              <div className='header-icon-box' onClick={onSearchButtonClickHandler}>
                 <div className='header-search-icon'></div>
               </div>
             </div>
           ) : (
-            <div className='header-icon-box' onClick={() => setSearchState(true)}>
+            <div className='header-icon-box' onClick={onSearchOpenButtonClickHandler}>
               <div className='header-search-icon'></div>
             </div>
         ))}
         {!isAuth && (
-          isMyPage ? (<div className='header-white-button' onClick={onSignOutButtonClickHandler}>로그아웃</div>) :
-          showUpload && activeUpload ? (<div className='header-black-button' onClick={onUploadButtonClickHandler}>업로드</div>) :
-          showUpload && !activeUpload ? (<div className='header-black-disable-button'>업로드</div>) :
-          login ? (<div className='header-white-button' onClick={onMyPageButtonClickHandler}>마이페이지</div>) :
-                  (<div className='header-black-button' onClick={onSignInButtonClickHandler}>로그인</div>)
+          isMyPage ? (<div className='white-button' onClick={onSignOutButtonClickHandler}>로그아웃</div>) :
+          showUpload && activeUpload ? (<div className='black-button' onClick={onUploadButtonClickHandler}>업로드</div>) :
+          showUpload && !activeUpload ? (<div className='disable-button'>업로드</div>) :
+          login ? (<div className='white-button' onClick={onMyPageButtonClickHandler}>마이페이지</div>) :
+                  (<div className='black-button' onClick={onSignInButtonClickHandler}>로그인</div>)
         )}
       </div>
     </div>

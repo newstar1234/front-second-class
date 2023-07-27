@@ -1,12 +1,14 @@
 import { useState, useEffect, ChangeEvent } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
-import { BoardDetailResponseDto, CommentListResponseDto, LikeListResponseDto } from 'src/interfaces/response';
+
+import { BoardDetailResponseDto, CommentListResponseDto, FavoriteListResponseDto } from 'src/interfaces/response';
 import { usePagination } from 'src/hooks';
 import { useUserStore } from 'src/stores';
 import CommentListItem from 'src/components/CommentListItem';
 import Pagination from 'src/components/Pagination';
-import { boardDetailMock, commentListMock, likeListMock } from 'src/mocks';
+import { boardDetailMock, commentListMock, favoriteListMock } from 'src/mocks';
 import { COUNT_BY_PAGE_COMMENT } from 'src/constants';
+
 import './style.css';
 
 //              component             //
@@ -25,14 +27,14 @@ export default function BoardDetail() {
   // description : 게시물 정보 상태 //
   const [board, setBoard] = useState<BoardDetailResponseDto | null>(null);
   // description : 게시물 좋아요 회원 리스트 상태 //
-  const [likeList, setLikeList] = useState<LikeListResponseDto[]>([]);
+  const [favoriteList, setFavoriteList] = useState<FavoriteListResponseDto[]>([]);
   // description : 댓글 리스트 상태 //
   const [commentList, setCommentList] = useState<CommentListResponseDto[]>([]);
   // description : 현재 페이지에서 보여줄 댓글 리스트 상태 //
   const [pageCommentList, setPageCommentList] = useState<CommentListResponseDto[]>([]);
 
   // description : 좋아요 리스트 컴포넌트 출력 상태 //
-  const [showLikeList, setShowLikeList] = useState<boolean>(false);
+  const [showFavoriteList, setShowFavoriteList] = useState<boolean>(false);
   // description : 댓글 리스트 컴포넌트  출력 상태 //
   const [showCommentList, setShowCommentList] = useState<boolean>(false);
 
@@ -78,12 +80,12 @@ export default function BoardDetail() {
     navigator(`/`);
   }
   // description : 좋아요 버튼 클릭 이벤트 //
-  const onLikeButtonClickHandler = () => {
+  const onFavoriteButtonClickHandler = () => {
     setFavorite(!favorite);
   }
   // description : 좋아요 리스트 펼치기 클릭 이벤트 //
-  const onShowLikeListButtonClickHandler = () => {
-    setShowLikeList(!showLikeList);
+  const onShowFavoriteListButtonClickHandler = () => {
+    setShowFavoriteList(!showFavoriteList);
   }
   // description : 댓글 리스트 펼치기 클릭 이벤트 //
   const onShowCommentListButtonClickHandler = () => {
@@ -93,15 +95,15 @@ export default function BoardDetail() {
   //              effect              //
   // description : 좋아요 리스트가 변경되면 실행 //
   useEffect (() => {
-    const liked = likeList.findIndex((item) => item.likeUserEmail === user?.email);
-    setFavorite(liked !== -1);
-  }, [likeList]);
-  //스코프에 likeList 넣어서 쳐다보게 함
+    const favorited = favoriteList.findIndex((item) => item.favoriteUserEmail === user?.email);
+    setFavorite(favorited !== -1);
+  }, [favoriteList]);
+  //스코프에 favoriteList 넣어서 쳐다보게 함
   // description : 게시물 번호 혹은 로그인 유저 정보가 변경되면 실행 //
   useEffect(() => {
     setViewMore(user?.email === board?.writerEmail);
-    const liked = likeList.findIndex((item) => item.likeUserEmail === user?.email); // findIndex : 배열안의 내용물이 객체일 때 존재하면 그 객체가 배열 안에서 몇번째인지 number 반환
-    setFavorite(liked !== -1);
+    const favorited = favoriteList.findIndex((item) => item.favoriteUserEmail === user?.email); // findIndex : 배열안의 내용물이 객체일 때 존재하면 그 객체가 배열 안에서 몇번째인지 number 반환
+    setFavorite(favorited !== -1);
   }, [boardNumber, user]);
 
   //              render              //
@@ -143,12 +145,12 @@ export default function BoardDetail() {
         </div>
         <div className='board-detail-bottom'>
           <div className='board-detail-bottom-item'>
-            <div className='board-detail-bottom-button' onClick={onLikeButtonClickHandler}> {/** 좋아요 하트  */}
+            <div className='board-detail-bottom-button' onClick={onFavoriteButtonClickHandler}> {/** 좋아요 하트  */}
               { favorite ? (<div className='favorite-fill-icon'></div>) : (<div className='favorite-icon'></div>) }
             </div>
-            <div className='board-detail-bottom-text'>{`좋아요 ${likeList.length}`}</div>
-            <div className='board-detail-bottom-button' onClick={onShowLikeListButtonClickHandler}> {/** 좋아요 펼치기  */}
-              { showLikeList ? (<div className='up-icon'></div>) : (<div className='down-icon'></div>) }
+            <div className='board-detail-bottom-text'>{`좋아요 ${favoriteList.length}`}</div>
+            <div className='board-detail-bottom-button' onClick={onShowFavoriteListButtonClickHandler}> {/** 좋아요 펼치기  */}
+              { showFavoriteList ? (<div className='up-icon'></div>) : (<div className='down-icon'></div>) }
             </div>
           </div>
           <div className='board-detail-bottom-item'>
@@ -167,7 +169,7 @@ export default function BoardDetail() {
   
   //              component             //
   // description : 좋아요 리스트 컴포넌트 //
-  const LikeList = () => {
+  const FavoriteList = () => {
 
     //              state             //
 
@@ -179,13 +181,13 @@ export default function BoardDetail() {
 
     //              render             //
     return(
-      <div className='like-list-box'>
-        <div className='like-list-title'>좋아요 <span className='like-list-title-emphasis'>{likeList.length}</span></div>
-        <div className='like-list-container'>
-          { likeList.map((item) => (
-            <div className='like-list-item'>
-              <div className='like-user-profile' style={{backgroundImage: `url(${item.likeUserProfileImage})`}}></div>
-              <div className='like-user-nickname'>{ item.likeUserNickname }</div>
+      <div className='favorite-list-box'>
+        <div className='favorite-list-title'>좋아요 <span className='favorite-list-title-emphasis'>{favoriteList.length}</span></div>
+        <div className='favorite-list-container'>
+          { favoriteList.map((item) => (
+            <div className='favorite-list-item'>
+              <div className='favorite-user-profile' style={{backgroundImage: `url(${item.favoriteUserProfileImage})`}}></div>
+              <div className='favorite-user-nickname'>{ item.favoriteUserNickname }</div>
             </div>
           ))}
         </div>  
@@ -236,9 +238,9 @@ export default function BoardDetail() {
           <textarea className='comment-textarea' placeholder='댓글을 작성해주세요.' rows={3} value={comment} onChange={onCommentChangeHandler}></textarea>
           <div className='comment-button-box'>
             { comment ? 
-            (<div className='comment-button'>댓글달기</div>) 
+            (<div className='black-button'>댓글달기</div>) 
             : 
-            (<div className='comment-disable-button'>댓글달기</div>) }
+            (<div className='disable-button'>댓글달기</div>) }
           </div>
         </div>
       </div>
@@ -249,7 +251,7 @@ export default function BoardDetail() {
   // description : 게시물 번호가 바뀔 때마다 새로운 정보 받아오기 //
   useEffect(() => {
     setBoard(boardDetailMock);
-    setLikeList(likeListMock);
+    setFavoriteList(favoriteListMock);
     setCommentList(commentListMock); 
 
     getPageCommentList();
@@ -270,7 +272,7 @@ export default function BoardDetail() {
   return (
     <div id='board-detail-wrapper'>
       <Board />
-      { showLikeList && (<LikeList />) } {/** 좋아요 뿌려주기 */}
+      { showFavoriteList && (<FavoriteList />) } {/** 좋아요 뿌려주기 */}
       { showCommentList && (<Comments />) }
     </div>
   )
