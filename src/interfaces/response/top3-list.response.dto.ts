@@ -6,7 +6,7 @@ export default interface Top3ListResponseDto {
     boardContent: string;
     boardImage: string;
     commentCount: number;
-    likeCount: number;
+    favoriteCount: number;
     viewCount: number;
     boardNumber: number;
 };

@@ -247,28 +247,28 @@
     align-items: center;
 }
 
-.like-list-box {
+.favorite-list-box {
     margin-top: 20px;
 
     border: 1px solid rgba(0,0,0,0.2);
     padding: 20px;
 }
 
-.like-list-title {
+.favorite-list-title {
     font-size: 16px;
     font-weight: 500;
     line-height: 100%;
 }
 
-.like-list-title-emphasis {
+.favorite-list-title-emphasis {
     font-weight: 700;
 }
 
-.like-list-container {
+.favorite-list-container {
     margin-top: 20px;
 }
 
-.like-list-item {
+.favorite-list-item {
     margin-bottom: 20px;
     margin-right: 30px;
 
@@ -278,7 +278,7 @@
     align-items: center;
 }
 
-.like-user-profile {
+.favorite-user-profile {
     border-radius: 32px;
 
     width: 32px;
@@ -288,7 +288,7 @@
     background-size: 100% 100%;
 }
 
-.like-user-nickname {
+.favorite-user-nickname {
     margin-left: 8px;
 
     color: rgba(0,0,0,0.7);

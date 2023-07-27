@@ -67,6 +67,10 @@ export default function BoardDetail() {
   //              function              //
 
   //              event handler              //
+  // description : 작성자 닉네임 클릭 이벤트 //
+  const onWriterNicknameClickHandler = () => {
+    navigator(`/user-page/${board?.writerEmail}`);
+  }
   // description : more 버튼 클릭 이벤트 //
   const onMoreButtonClickHandler = () => {
     setOpenMore(!openMore);
@@ -116,7 +120,7 @@ export default function BoardDetail() {
           <div className='board-detail-meta-container'>
             <div className='board-detail-meta-left'>
               <div className='board-detail-writer-profile-image' style={{ backgroundImage: `url(${board?.writerProfileImage})` }} ></div>
-              <div className='board-detail-writer-nickname'>{ board?.writerNickName }</div>
+              <div className='board-detail-writer-nickname' onClick={onWriterNicknameClickHandler}>{ board?.writerNickName }</div>
               <div className='board-detail-write-date'>{'\|'}</div>
               <div className='board-detail-write-date'> { board?.writerDate }</div>
             </div>

@@ -6,7 +6,7 @@ export default interface CurrentListResponseDto {
     boardContent: string;
     boardImage: string;
     commentCount: number;
-    likeCount: number;
+    favoriteCount: number;
     viewCount: number;
     boardNumber: number;
 }

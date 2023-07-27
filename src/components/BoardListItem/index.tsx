@@ -14,7 +14,7 @@ export default function BoardListItem({item}: Props) {
   // description : 속성으로 받아오는 게시물 관련 상태 //
   const { boardNumber, boardTitle, boardContent, boardImage } = item;
   const { writerProfileImage, writerNickName, writerDate } = item;
-  const { likeCount, viewCount, commentCount } = item;
+  const { favoriteCount, viewCount, commentCount } = item;
   
   //            function              //
   // description : 페이지 이동을 위한 네비게이터 함수 //
@@ -54,7 +54,7 @@ export default function BoardListItem({item}: Props) {
           { boardContent }
         </div>
         <div className='board-list-item-count'>
-          { `댓글 ${commentCount} · 좋아요 ${likeCount} · 조회수 ${viewCount}` }
+          { `댓글 ${commentCount} · 좋아요 ${favoriteCount} · 조회수 ${viewCount}` }
         </div>
       </div>
       <div className='board-list-item-right'>
