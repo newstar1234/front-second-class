@@ -5,7 +5,7 @@ import { Address, useDaumPostcodePopup } from 'react-daum-postcode';
 import { useUserStore } from 'src/stores';
 import InputBox from 'src/components/InputBox';
 import { signInMock, userMock } from 'src/mocks';
-import { INPUT_ICON, emailPattern, telNumberPattern } from 'src/constants';
+import { INPUT_ICON, MAIN_PATH, emailPattern, telNumberPattern } from 'src/constants';
 import './style.css';
 
 //              component             //
@@ -59,7 +59,7 @@ export default function Authentication() {
       return;
     }
     setUser(userMock); // 로그인 정보 가져오기
-    navigator('/');
+    navigator(MAIN_PATH);
   }
 
   //              component             //

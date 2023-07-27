@@ -2,6 +2,7 @@ import { useState, useEffect, ChangeEvent } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useBoardWriteStore, useUserStore } from 'src/stores';
 import './style.css';
+import { AUTH_PATH, BOARD_UPDATE_PATH, BOARD_WRITE_PATH, MAIN_PATH, SEARCH_PATH, USER_PAGE_PATH } from 'src/constants';
 
 //              component             //
 // description : Header 레이아웃 //
@@ -26,13 +27,13 @@ export default function Header() {
   const navigator = useNavigate();
 
   //description : search 버튼 출력 여부 //
-  const showSearch = pathname !== '/my-page' && pathname !== '/board/write' && pathname.indexOf('/board/update') === -1;
+  const showSearch = !pathname.includes(USER_PAGE_PATH('')) && pathname !== BOARD_WRITE_PATH() && !pathname.includes(BOARD_UPDATE_PATH(''));
   //description : 현재 페이지가 인증 화면인지 여부 //
-  const isAuth = pathname === '/auth';
-  //description : 현재 페이지가 마이페이지인지 여부 //
-  const isMyPage = pathname === '/my-page';
+  const isAuth = pathname === AUTH_PATH;
+  //description : 현재 페이지가 마이페이지인지 여부 // 포함여부로 바꿈
+  const isMyPage = pathname.includes(USER_PAGE_PATH(''));
   //description : upload 버튼 출력 여부 //
-  const showUpload = pathname === '/board/write' || pathname.indexOf('/board/update') !== -1;
+  const showUpload = pathname === BOARD_WRITE_PATH() || pathname.includes(BOARD_UPDATE_PATH(''));
   //description : upload 버튼 활성화 여부 //
   const activeUpload = boardTitle !== ''  && boardContent !== '' ;
 
@@ -52,28 +53,29 @@ export default function Header() {
       alert('검색어를 입력해주세요!');
       return;
     }
-    navigator(`/search/${search}`);
+    navigator(SEARCH_PATH(search));
   }
   //description : 로고 클릭 이벤트 //
   const onLogoClickHandler = () => {
-    navigator('/');
+    navigator(MAIN_PATH);
   }
   //description : 로그인 버튼 클릭 이벤트 //
   const onSignInButtonClickHandler = () => {
     setLogin(true);
-    navigator('/auth');
+    navigator(AUTH_PATH);
   }
-  //description : 마이페이지 버튼 클릭 이벤트 //
+  //description : 유저(마이)페이지 버튼 클릭 이벤트 //
   const onMyPageButtonClickHandler = () => {
-    navigator('/my-page');
+    if(!user) return;
+    navigator(USER_PAGE_PATH(user.email));  //undefind가 올수있어서 위에서 리턴해줘야함
   }
   //description : 로그아웃 버튼 클릭 이벤트 // 
   const onSignOutButtonClickHandler = () => {
     setLogin(false); //로그인 false
     setUser(null);  // 유저 정보 없음
-    navigator('/');
+    navigator(MAIN_PATH);
   }
-  //description : 업로드 버튼 클릭 이벤트 //
+  //! description : 업로드 버튼 클릭 이벤트 //
   const onUploadButtonClickHandler = () => {
     if(pathname === '/board/write') alert('작성!');
     else alert('업로드!');

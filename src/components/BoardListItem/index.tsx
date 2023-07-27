@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { CurrentListResponseDto, MyPageListResponseDto, SearchListResponseDto } from 'src/interfaces/response';
 import './style.css';
+import { BOARD_DETAIL_PATH } from 'src/constants';
 
 interface Props {  //속성이 같으면 받아짐 // 자바는 클래스가 다르면 안 받아짐 // 혹시 모르니 다 받게 해둠 
   item: CurrentListResponseDto | SearchListResponseDto | MyPageListResponseDto;
@@ -23,7 +24,7 @@ export default function BoardListItem({item}: Props) {
   //              event handler             //
   // description : 컴포넌트 클릭 이벤트 //
   const onClickHandler = () => {
-    navigator(`/board/detail/${boardNumber}`);
+    navigator(BOARD_DETAIL_PATH(boardNumber));
   }
 
   //              component             //

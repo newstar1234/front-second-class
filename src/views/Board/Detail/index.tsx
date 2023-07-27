@@ -7,7 +7,7 @@ import { useUserStore } from 'src/stores';
 import CommentListItem from 'src/components/CommentListItem';
 import Pagination from 'src/components/Pagination';
 import { boardDetailMock, commentListMock, favoriteListMock } from 'src/mocks';
-import { COUNT_BY_PAGE_COMMENT } from 'src/constants';
+import { COUNT_BY_PAGE_COMMENT, MAIN_PATH, UPDATE_PATH, USER_PAGE_PATH } from 'src/constants';
 
 import './style.css';
 
@@ -69,7 +69,8 @@ export default function BoardDetail() {
   //              event handler              //
   // description : 작성자 닉네임 클릭 이벤트 //
   const onWriterNicknameClickHandler = () => {
-    navigator(`/user-page/${board?.writerEmail}`);
+    if(!board) return;
+    navigator(USER_PAGE_PATH(board?.writerEmail)); // undefind가 있어서 없으면 리턴하게끔 해줘야함 
   }
   // description : more 버튼 클릭 이벤트 //
   const onMoreButtonClickHandler = () => {
@@ -77,11 +78,12 @@ export default function BoardDetail() {
   } 
   // description : 수정 버튼 클릭 이벤트 //
   const onUpdateButtonClickHandler = () => {
-    navigator(`/board/update/${boardNumber}`);
+    if(!board) return;
+    navigator(UPDATE_PATH(board?.boardNumber));
   }
   // description : 삭제 버튼 클릭 이벤트 //
   const onDeleteButtonClickHandler = () => {
-    navigator(`/`);
+    navigator(MAIN_PATH);
   }
   // description : 좋아요 버튼 클릭 이벤트 //
   const onFavoriteButtonClickHandler = () => {

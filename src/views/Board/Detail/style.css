@@ -48,6 +48,10 @@
     line-height: 100%;
 }
 
+.board-detail-writer-nickname:hover {
+    cursor: pointer;
+}
+
 .board-detail-write-date {
     margin-left: 8px;
     color: rgba(0,0,0,0.4);

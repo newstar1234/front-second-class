@@ -7,7 +7,7 @@ import Top3ListItem from 'src/components/Top3ListItem';
 import BoardListItem from 'src/components/BoardListItem';
 import Pagination from 'src/components/Pagination';
 import { currentBoardListMock, popularWordListMock, top3ListMock } from 'src/mocks';
-import { COUNT_BY_PAGE } from 'src/constants';
+import { COUNT_BY_PAGE, SEARCH_PATH } from 'src/constants';
 
 import './style.css';
 
@@ -71,7 +71,7 @@ export default function Main() {
     //             event handler            // 
     // description: 인기 검색어 클릭 이벤트 //
     const onPopularClickHandler = (word:string) => {
-      navigator(`/search/${word}`);
+      navigator(SEARCH_PATH(word));
     }
 
     //              component              //

@@ -168,7 +168,7 @@ export const searchBoardListMock = [
     }
 ];
 
-export const MyPageBoardListMock = [
+export const myPageBoardListMock = [
     {
         writerProfileImage: 'https://thumb.mtstarnews.com/06/2023/06/2023062107375547872_1.jpg',
         writerNickName: '비가너무싫음',
