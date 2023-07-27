@@ -75,9 +75,9 @@ export default function Header() {
     setUser(null);  // 유저 정보 없음
     navigator(MAIN_PATH);
   }
-  //! description : 업로드 버튼 클릭 이벤트 //
+  // description : 업로드 버튼 클릭 이벤트 //
   const onUploadButtonClickHandler = () => {
-    if(pathname === '/board/write') alert('작성!');
+    if(pathname === BOARD_WRITE_PATH()) alert('작성!');
     else alert('업로드!');
     resetBoard();
   }
@@ -89,7 +89,7 @@ export default function Header() {
   }, [user]);// 스코프 user로 잡음
   // description : path url이 바뀔 때마다 실행 // path name이 바뀔떄마다 
   useEffect(() => {
-    if(pathname.indexOf('/search/') === -1) {
+    if(!pathname.includes(SEARCH_PATH(''))) {
       setSearch('');
       setSearchState(false);
     }

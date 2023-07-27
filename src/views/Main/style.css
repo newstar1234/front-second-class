@@ -1,5 +1,5 @@
 .main-top {
-    padding: 80px 120px 40px;
+    padding: 5.555555vw 8.333333vw 2.777777vw;
 }
 
 .main-top-text-container {
@@ -34,7 +34,7 @@
 }
 
 .main-bottom {
-    padding: 40px 120px;
+    padding: 40px 8.333333vw;
     
     background-color: rgba(0, 0, 0, 0.05);
 }
