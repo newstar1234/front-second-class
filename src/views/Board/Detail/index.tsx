@@ -1,5 +1,6 @@
 import { useState, useEffect, ChangeEvent } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
+import axios from 'axios';
 
 import { BoardDetailResponseDto, CommentListResponseDto, FavoriteListResponseDto } from 'src/interfaces/response';
 import { usePagination } from 'src/hooks';
@@ -83,7 +84,14 @@ export default function BoardDetail() {
   }
   // description : 삭제 버튼 클릭 이벤트 //
   const onDeleteButtonClickHandler = () => {
-    navigator(MAIN_PATH);
+
+    axios.delete('url').then((response) => {
+      navigator(MAIN_PATH);
+    }).catch((error) => {
+
+    });
+
+    // navigator(MAIN_PATH);
   }
   // description : 좋아요 버튼 클릭 이벤트 //
   const onFavoriteButtonClickHandler = () => {
