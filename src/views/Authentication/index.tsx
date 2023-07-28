@@ -7,6 +7,9 @@ import InputBox from 'src/components/InputBox';
 import { signInMock, userMock } from 'src/mocks';
 import { INPUT_ICON, MAIN_PATH, emailPattern, telNumberPattern } from 'src/constants';
 import './style.css';
+import axios from 'axios';
+import SignUpReqyestDto from 'src/interfaces/request/sign-up.request.dto';
+import SignInRequestDto from 'src/interfaces/request/sign-in.request.dto';
 
 //              component             //
 // description : 인증 화면  //
@@ -52,14 +55,36 @@ export default function Authentication() {
     setView('sign-up');
   }
   // description : 로그인 버튼 클릭 이벤트 //
-  const onSignInButtonClickHandler = () => {
-    // 검증 먼저
+  const onSignInButtonClickHandler = async () => {
+
     if (email !== signInMock.email || password !== signInMock.password) {
       setError(true);
       return;
     }
-    setUser(userMock); // 로그인 정보 가져오기
-    navigator(MAIN_PATH);
+
+    const data:SignInRequestDto = {
+      email,
+      password
+    }
+
+    axios.post('url', data).then((response) => {
+      // todo : 성공시 처리 
+      setUser(userMock); // 로그인 정보 가져오기
+      navigator(MAIN_PATH);
+    }).catch((error) =>{
+      // todo : 실패시 처리 
+    });
+
+// axios.get('http://localhost:3000').then((response) => {  //! get메소드 실행 요청 post는 create일때 
+//   console.log(response);
+// }).catch((error) => {
+//   console.log(error);
+// });
+
+// const response = await axios.get('http://localhost:3000').catch((error) => {});  //! async / await 는 비동기통신을 기다려주는 역할
+
+// console.log(response);
+// console.log('axios 이후');
   }
 
   //              component             //
@@ -100,7 +125,7 @@ export default function Authentication() {
     // description : 다음 포스트 (우편번호 검색) 팝업 상태 //
     const open = useDaumPostcodePopup();
     // description : 회원가입 card 페이지 상태 //
-    const [page, setPage] = useState< 1 | 2 >(2);
+    const [page, setPage] = useState< 1 | 2 >(1);
 
     // description : 비밀번호 input 타입 상태 //
     const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -157,7 +182,25 @@ export default function Authentication() {
       setNicknameError(!nickname);
       setAddressError (!address);
 
-      if(!telNumberFlag && nickname && address) setView('sign-in');
+      // if(!telNumberFlag && nickname && address) setView('sign-in');
+
+      // description : 백엔드로 데이터 전송(회원가입 포맷에 맞춰서) // 
+      const data:SignUpReqyestDto = {
+        email,
+        password,
+        nickname,
+        telNumber,
+        address,
+        addressDetail
+      } 
+
+      axios.post('url', data).then((response) => {
+        //todo : 정상 결과
+        setView('sign-in');
+      }).catch((error) => {
+        //todo : 실패 결과
+
+      }); 
     }
 
     //              event handler             //
