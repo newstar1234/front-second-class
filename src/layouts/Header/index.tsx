@@ -1,8 +1,12 @@
 import { useState, useEffect, ChangeEvent } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+
 import { useBoardWriteStore, useUserStore } from 'src/stores';
+import { AUTH_PATH, BOARD_DETAIL_PATH, BOARD_UPDATE_PATH, BOARD_WRITE_PATH, MAIN_PATH, SEARCH_PATH, USER_PAGE_PATH } from 'src/constants';
 import './style.css';
-import { AUTH_PATH, BOARD_UPDATE_PATH, BOARD_WRITE_PATH, MAIN_PATH, SEARCH_PATH, USER_PAGE_PATH } from 'src/constants';
+import PostBoardRequestDto from 'src/interfaces/request/post-board-request.dto';
+import PatchBoardRequestDto from 'src/interfaces/request/patch-board.request.dto';
 
 //              component             //
 // description : Header 레이아웃 //
@@ -77,9 +81,41 @@ export default function Header() {
   }
   // description : 업로드 버튼 클릭 이벤트 //
   const onUploadButtonClickHandler = () => {
-    if(pathname === BOARD_WRITE_PATH()) alert('작성!');
-    else alert('업로드!');
-    resetBoard();
+    if(pathname === BOARD_WRITE_PATH()) {
+
+      const data:PostBoardRequestDto = {
+        title: boardTitle,
+        content: boardContent,
+        imageUrl: '',
+      }
+
+      axios.post('url', data).then((response) => {
+        resetBoard();
+        navigator(MAIN_PATH);
+      }).catch((error) => {
+
+      }); 
+
+    }
+    else {
+
+      // todo : boardNumber 받아오기 //
+      const data:PatchBoardRequestDto = {
+        boardNumber: 1,
+        title: boardTitle,
+        content: boardContent,
+        imageUrl: '',
+      }
+
+      axios.patch('url', data).then((response) => {
+        resetBoard();
+        navigator(BOARD_DETAIL_PATH(1));
+      }).catch((error) => {
+
+      });
+
+    }
+    // resetBoard();
   }
 
   //              effect              //

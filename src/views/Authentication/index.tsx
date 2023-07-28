@@ -1,13 +1,13 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { Address, useDaumPostcodePopup } from 'react-daum-postcode';
+import axios from 'axios';
 
 import { useUserStore } from 'src/stores';
 import InputBox from 'src/components/InputBox';
 import { signInMock, userMock } from 'src/mocks';
 import { INPUT_ICON, MAIN_PATH, emailPattern, telNumberPattern } from 'src/constants';
 import './style.css';
-import axios from 'axios';
 import SignUpReqyestDto from 'src/interfaces/request/sign-up.request.dto';
 import SignInRequestDto from 'src/interfaces/request/sign-in.request.dto';
 
@@ -75,16 +75,6 @@ export default function Authentication() {
       // todo : 실패시 처리 
     });
 
-// axios.get('http://localhost:3000').then((response) => {  //! get메소드 실행 요청 post는 create일때 
-//   console.log(response);
-// }).catch((error) => {
-//   console.log(error);
-// });
-
-// const response = await axios.get('http://localhost:3000').catch((error) => {});  //! async / await 는 비동기통신을 기다려주는 역할
-
-// console.log(response);
-// console.log('axios 이후');
   }
 
   //              component             //
