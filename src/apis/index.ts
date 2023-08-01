@@ -2,7 +2,7 @@ import axios from 'axios';
 import PostBoardRequestDto from 'src/interfaces/request/post-board-request.dto';
 import SignInRequestDto from 'src/interfaces/request/sign-in.request.dto';
 
-import SignUpReqyestDto from "src/interfaces/request/sign-up.request.dto";
+import SignUpRequestDto from "src/interfaces/request/sign-up.request.dto";
 
 const API_DOMAIN = 'http://localhost:4040/api/v1';
 const SIGN_UP_URL = () => `${API_DOMAIN}/auth/sign-up`;  //인증과 관련된 작업
@@ -37,7 +37,7 @@ const GET_SIGN_IN_USER_URL = () => `${API_DOMAIN}/user`;
 const POST_FILE = () => `${API_DOMAIN}/file/upload`;
 
 
-export const signUpRequest = async (data:SignUpReqyestDto) => {
+export const signUpRequest = async (data:SignUpRequestDto) => {
     const result = await axios.post(SIGN_UP_URL(), data).then((response) => {
         return response;
     }).catch((error) => null);

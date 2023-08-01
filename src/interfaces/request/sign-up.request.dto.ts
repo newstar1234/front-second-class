@@ -1,8 +1,8 @@
-export default interface SignUpReqyestDto {
+export default interface SignUpRequestDto {
     email: string;
     password: string;
     nickname: string;
     telNumber: string;
     address: string;
-    addressDetail: string;
+    addressDetail?: string | null;
 }
