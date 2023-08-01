@@ -22,6 +22,7 @@ const GET_COMMENT_LIST_URL = (boardNumber:number | string) => `${API_DOMAIN}/boa
 
 const PUT_FAVORITE_URL = (boardNumber:number | string) => `${API_DOMAIN}/board/${boardNumber}/favorite`;
 const POST_COMMENT_URL = (boardNumber:number | string) => `${API_DOMAIN}/board/${boardNumber}/comment`;
+
 const PATCH_BOARD_URL = (boardNumber: number | string) => `${API_DOMAIN}/board/${boardNumber}`;    
 const DELETE_BOARD_URL = (boardNumber: number | string) => `${API_DOMAIN}/board/${boardNumber}`;
 const POST_BOARD_URL = () => `${API_DOMAIN}/board`;
