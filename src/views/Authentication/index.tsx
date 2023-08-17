@@ -4,7 +4,7 @@ import { Address, useDaumPostcodePopup } from 'react-daum-postcode';
 import axios from 'axios';
 
 import SignUpRequestDto from 'src/interfaces/request/sign-up.request.dto';
-import SignInRequestDto from 'src/interfaces/request/sign-in.request.dto';
+import SignInRequestDto from 'src/interfaces/request/auth/sign-in.request.dto';
 import { useUserStore } from 'src/stores';
 import InputBox from 'src/components/InputBox';
 import { signInMock, userMock } from 'src/mocks';

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import PostBoardRequestDto from 'src/interfaces/request/post-board-request.dto';
-import SignInRequestDto from 'src/interfaces/request/sign-in.request.dto';
+import SignInRequestDto from 'src/interfaces/request/auth/sign-in.request.dto';
 
 import SignUpRequestDto from "src/interfaces/request/sign-up.request.dto";
 
