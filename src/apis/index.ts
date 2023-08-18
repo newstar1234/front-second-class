@@ -4,6 +4,7 @@ import { SignUpRequestDto, SignInRequestDto } from 'src/interfaces/request/auth'
 import { PostBoardRequestDto } from 'src/interfaces/request/board';
 import { SignInResponseDto, SignUpResponseDto } from 'src/interfaces/response/auth';
 import ResponseDto from 'src/interfaces/response/response.dto';
+import { GetLoginUserResponseDto } from 'src/interfaces/response/user';
 
 const API_DOMAIN = 'http://localhost:4040/api/v1';
 const SIGN_UP_URL = () => `${API_DOMAIN}/auth/sign-up`;  //인증과 관련된 작업
@@ -179,13 +180,20 @@ export const getUserBoardListRequest = async (email:string) => {
     return result;
 }
 
-export const getSignInUserRequest = async () => {
-    const result = await axios.get(GET_SIGN_IN_USER_URL()).then((response) => {
-        return response;
-    }).catch((error) => null);
+export const getSignInUserRequest = async (token:string) => {
+    const headers = { headers: {'Authorization': `Bearer ${token}`} };
+    const result = await axios.get(GET_SIGN_IN_USER_URL(), headers)
+                .then((response) => {
+                const responseBody:GetLoginUserResponseDto = response.data;
+                    return responseBody;
+                }).catch((error) => {
+                const responseBody:ResponseDto = error.response.data;
+                    return responseBody;
+    });
 
     return result;
 }
+// ! Get방식은 responseBody로 보낼거임 //
 
 export const postFileRequest = async () => {
     const result = await axios.post(POST_FILE()).then((response) => {
