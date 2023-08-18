@@ -4,7 +4,7 @@ import { SignUpRequestDto, SignInRequestDto } from 'src/interfaces/request/auth'
 import { PostBoardRequestDto } from 'src/interfaces/request/board';
 import { SignInResponseDto, SignUpResponseDto } from 'src/interfaces/response/auth';
 import ResponseDto from 'src/interfaces/response/response.dto';
-import { GetLoginUserResponseDto } from 'src/interfaces/response/user';
+import { GetLoginUserResponseDto, GetUserResponseDto } from 'src/interfaces/response/user';
 
 const API_DOMAIN = 'http://localhost:4040/api/v1';
 const SIGN_UP_URL = () => `${API_DOMAIN}/auth/sign-up`;  //인증과 관련된 작업
@@ -164,10 +164,16 @@ export const deleteBoardRequest = async (boardNumber: number | string) => {
     return result;
 }
 
+// !
 export const getUserRequest = async (email:string) => {
-    const result = await axios.get(GET_USER_URL(email)).then((response) => {
-        return response;
-    }).catch((error) => null);
+    const result = await axios.get(GET_USER_URL(email))
+    .then((response) => {
+        const responseBody:GetUserResponseDto = response.data;
+        return responseBody;
+    }).catch((error) => {
+        const responseBody:ResponseDto = error.response.data;
+        return responseBody;
+    });
 
     return result;
 }

@@ -1,6 +1,7 @@
 import { useState, useEffect, ChangeEvent } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import {useCookies} from 'react-cookie';
 
 import { useBoardWriteStore, useUserStore } from 'src/stores';
 import { AUTH_PATH, BOARD_DETAIL_PATH, BOARD_UPDATE_PATH, BOARD_WRITE_PATH, MAIN_PATH, SEARCH_PATH, USER_PAGE_PATH } from 'src/constants';
@@ -19,6 +20,10 @@ export default function Header() {
   const { boardTitle, boardContent, resetBoard } = useBoardWriteStore();
   // description : 로그인 유저 정보 상태  //
   const { user, setUser } = useUserStore();
+  
+  // description : Cookie 상태 //
+  const [cookies, setCookie] = useCookies();
+
   //description : 검색 아이콘 클릭 상태 //
   const [searchState, setSearchState] = useState<boolean>(false);
   // description : 로그인 상태 //
@@ -75,6 +80,7 @@ export default function Header() {
   }
   //description : 로그아웃 버튼 클릭 이벤트 // 
   const onSignOutButtonClickHandler = () => {
+    setCookie('accessToken', '', { expires: new Date(), path: MAIN_PATH });
     setLogin(false); //로그인 false
     setUser(null);  // 유저 정보 없음
     navigator(MAIN_PATH);
@@ -89,13 +95,6 @@ export default function Header() {
         imageUrl: '',
       }
 
-      axios.post('url', data).then((response) => {
-        resetBoard();
-        navigator(MAIN_PATH);
-      }).catch((error) => {
-
-      }); 
-
     }
     else {
 
@@ -106,14 +105,6 @@ export default function Header() {
         content: boardContent,
         imageUrl: '',
       }
-
-      axios.patch('url', data).then((response) => {
-        resetBoard();
-        navigator(BOARD_DETAIL_PATH(1));
-      }).catch((error) => {
-
-      });
-
     }
     // resetBoard();
   }

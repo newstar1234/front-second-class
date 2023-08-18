@@ -60,6 +60,7 @@ export default function Authentication() {
     if (code === 'DE') alert ('데이터 베이스 에러입니다!!');
     if (code !== 'SU') return;
 
+    // ! 나중에 뭔가 지운거 다시 확인해야함 마지막 시간꺼 //
     const  { token, expiredTime } = result as SignInResponseDto;
     getSignInUserRequest(token).then(getSignInUserResponseHandler);
 
@@ -67,6 +68,7 @@ export default function Authentication() {
     const expires = new Date(now + expiredTime * 1000);
 
     setCookie("accessToken", token, { expires });
+    navigator("/");
 
   }
 
@@ -75,6 +77,8 @@ export default function Authentication() {
     if(code === 'NU') alert('토큰 정보가 잘못되었습니다.');
     if(code === 'DE') alert('데이터 베이스 에러입니다.');
     if(code !== 'SU') return;
+
+    setUser({...result as GetLoginUserResponseDto });
 
   }
 
