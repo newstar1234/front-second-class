@@ -1,5 +1,5 @@
 import ResponseDto from "../response.dto";
 
-export default interface GetPopularListResponseDto extends ResponseDto {
+export default interface GetRelationListResponseDto extends ResponseDto {
     relationList: string[];
 }
