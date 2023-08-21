@@ -104,6 +104,7 @@ export default function Main() {
         changeSection(response.data.length , COUNT_BY_PAGE);
         setCurrentList(response.data);
       }).catch((error) => {
+        changeSection(72, COUNT_BY_PAGE);
         setCurrentList(currentBoardListMock);
       });
 

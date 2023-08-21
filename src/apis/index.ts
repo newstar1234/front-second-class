@@ -3,6 +3,7 @@ import axios from 'axios';
 import { SignUpRequestDto, SignInRequestDto } from 'src/interfaces/request/auth';
 import { PostBoardRequestDto } from 'src/interfaces/request/board';
 import { SignInResponseDto, SignUpResponseDto } from 'src/interfaces/response/auth';
+import { PostBoardResponseDto } from 'src/interfaces/response/board';
 import ResponseDto from 'src/interfaces/response/response.dto';
 import { GetLoginUserResponseDto, GetUserResponseDto } from 'src/interfaces/response/user';
 
@@ -40,24 +41,24 @@ const POST_FILE = () => `${API_DOMAIN}/file/upload`;
 
 //! response.data -> 실제로 받는 response body에 대한 내용 //
 export const signUpRequest = async (data:SignUpRequestDto) => {
-    const result = 
-        await axios.post(SIGN_UP_URL(), data).then((response) => {
-            const responseBody: SignUpResponseDto = response.data;
-            const { code } = responseBody;
-          return code;
-        })
-        .catch((error) => {
-            const responseBody: ResponseDto = error.response.data;
-            const { code } = responseBody;
-          return code;
-        });
+    const result = await axios.post(SIGN_UP_URL(), data)
+            .then((response) => {
+                const responseBody: SignUpResponseDto = response.data;
+                const { code } = responseBody;
+            return code;
+            })
+            .catch((error) => {
+                const responseBody: ResponseDto = error.response.data;
+                const { code } = responseBody;
+            return code;
+            });
 
     return result;
 }
-// ! code 만 반환하면 안됨 //
+//- code 만 반환하면 안됨 //
 export const signInRequest = async (data:SignInRequestDto) => {
-    const result = 
-        await axios.post(SIGN_IN_URL(), data).then((response) => {
+    const result =  await axios.post(SIGN_IN_URL(), data)
+        .then((response) => {
             const responseBody: SignInResponseDto = response.data;
             return responseBody;
         })
@@ -164,16 +165,15 @@ export const deleteBoardRequest = async (boardNumber: number | string) => {
     return result;
 }
 
-// !
 export const getUserRequest = async (email:string) => {
     const result = await axios.get(GET_USER_URL(email))
-    .then((response) => {
-        const responseBody:GetUserResponseDto = response.data;
-        return responseBody;
-    }).catch((error) => {
-        const responseBody:ResponseDto = error.response.data;
-        return responseBody;
-    });
+        .then((response) => {
+            const responseBody:GetUserResponseDto = response.data;
+            return responseBody;
+        }).catch((error) => {
+            const responseBody:ResponseDto = error.response.data;
+            return responseBody;
+        });
 
     return result;
 }
@@ -189,30 +189,41 @@ export const getUserBoardListRequest = async (email:string) => {
 export const getSignInUserRequest = async (token:string) => {
     const headers = { headers: {'Authorization': `Bearer ${token}`} };
     const result = await axios.get(GET_SIGN_IN_USER_URL(), headers)
-                .then((response) => {
-                const responseBody:GetLoginUserResponseDto = response.data;
-                    return responseBody;
-                }).catch((error) => {
-                const responseBody:ResponseDto = error.response.data;
-                    return responseBody;
+        .then((response) => {
+        const responseBody:GetLoginUserResponseDto = response.data;
+            return responseBody;
+        }).catch((error) => {
+        const responseBody:ResponseDto = error.response.data;
+            return responseBody;
     });
 
     return result;
 }
-// ! Get방식은 responseBody로 보낼거임 //
+//- Get방식은 responseBody로 보낼거임 //
 
-export const postFileRequest = async () => {
-    const result = await axios.post(POST_FILE()).then((response) => {
-        return response;
-    }).catch((error) => null);
+export const uploadFileRequest = async (data: FormData) => {
+    const result = await axios.post(POST_FILE(), data, { headers: { 'Content-Type': 'multipart/form-data' } })
+        .then((response) => {
+            const imageUrl: string = response.data;
+            return imageUrl;
+        })
+        .catch((error) => null);
 
     return result;
 }
 
-export const postBoardRequest = async (data:PostBoardRequestDto) => {
-    const result = await axios.post(POST_BOARD_URL(),data).then((response) => {
-        return response;
-    }).catch((error) => null);
+export const postBoardRequest = async (data:PostBoardRequestDto, token:string) => {
+    const result = await axios.post(POST_BOARD_URL(),data, { headers: { Authorization: `Bearer ${token}` } })
+        .then((response) => {
+            const responseBody:PostBoardResponseDto = response.data;
+            const { code } = responseBody; 
+            return code;
+        })
+        .catch((error) => {
+            const responseBody: ResponseDto = error.response.data;
+            const { code } = responseBody;
+            return code;
+        });
 
     return result;
 }

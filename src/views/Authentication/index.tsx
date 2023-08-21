@@ -62,7 +62,6 @@ export default function Authentication() {
 
     // ! 나중에 뭔가 지운거 다시 확인해야함 마지막 시간꺼 //
     const  { token, expiredTime } = result as SignInResponseDto;
-    getSignInUserRequest(token).then(getSignInUserResponseHandler);
 
     const now = new Date().getTime();
     const expires = new Date(now + expiredTime * 1000);
@@ -72,15 +71,6 @@ export default function Authentication() {
 
   }
 
-  const getSignInUserResponseHandler = (result: GetLoginUserResponseDto | ResponseDto) => {
-    const { code } = result;
-    if(code === 'NU') alert('토큰 정보가 잘못되었습니다.');
-    if(code === 'DE') alert('데이터 베이스 에러입니다.');
-    if(code !== 'SU') return;
-
-    setUser({...result as GetLoginUserResponseDto });
-
-  }
 
   //              event handler             //
   // description : 비밀번호 타입 변경 버튼 클릭 이벤트 //
@@ -125,7 +115,7 @@ export default function Authentication() {
               {`이메일 주소 또는 비밀번호를 잘못 입력했습니다.\n입력하신 내용을 다시 확인해주세요.`}
               </div>
           )}
-          <div className='auth-card-bottom-button' onClick={onSignInButtonClickHandler}>로그인</div>  {/* 위치 잘 보고 지정해주기!! button 자리에 onClick */}
+          <div className='auth-card-bottom-button' onClick={onSignInButtonClickHandler}>로그인</div>  
           <div className='auth-card-bottom-text'>
             신규 사용자이신가요? <span className='auth-emphasis' onClick={onSignUpClickHandler}>회원가입</span></div>
         </div>

@@ -1,13 +1,13 @@
 import { useState, useEffect, ChangeEvent } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import {useCookies} from 'react-cookie';
 
 import { useBoardWriteStore, useUserStore } from 'src/stores';
 import { AUTH_PATH, BOARD_DETAIL_PATH, BOARD_UPDATE_PATH, BOARD_WRITE_PATH, MAIN_PATH, SEARCH_PATH, USER_PAGE_PATH } from 'src/constants';
-import './style.css';
-import PostBoardRequestDto from 'src/interfaces/request/post-board-request.dto';
 import PatchBoardRequestDto from 'src/interfaces/request/board/patch-board.request.dto';
+import { postBoardRequest, uploadFileRequest } from 'src/apis';
+import './style.css';
+import { PostBoardRequestDto } from 'src/interfaces/request/board';
 
 //              component             //
 // description : Header 레이아웃 //
@@ -17,7 +17,7 @@ export default function Header() {
   //description : url 경로 상태 //
   const { pathname } = useLocation();
   //description : 게시물 작성 데이터 상태 //
-  const { boardTitle, boardContent, resetBoard } = useBoardWriteStore();
+  const { boardTitle, boardContent, boardImage, resetBoard } = useBoardWriteStore();
   // description : 로그인 유저 정보 상태  //
   const { user, setUser } = useUserStore();
   
@@ -86,27 +86,47 @@ export default function Header() {
     navigator(MAIN_PATH);
   }
   // description : 업로드 버튼 클릭 이벤트 //
-  const onUploadButtonClickHandler = () => {
+  const onUploadButtonClickHandler = async() => {
     if(pathname === BOARD_WRITE_PATH()) {
 
-      const data:PostBoardRequestDto = {
-        title: boardTitle,
-        content: boardContent,
-        imageUrl: '',
+      let imageUrl = null; 
+      if(boardImage !== null) {
+        const data = new FormData();  // file upload시 formdata로 하니까 만들어둠
+        data.append('file' , boardImage);
+
+        imageUrl = await uploadFileRequest(data);  // Promise<string> 이 반환됨
       }
 
+      const data: PostBoardRequestDto = {
+        title: boardTitle,
+        content: boardContent,
+        imageUrl
+      }
+
+      const token = cookies.accessToken;
+
+      postBoardRequest(data, token).then((code) => {
+        if(code === 'NE') alert('존재하지 않는 회원입니다.');
+        if(code === 'VF') alert('필수 데이터를 입력하지 않았습니다.');
+        if(code === 'DE') alert('데이터 베이스 에러입니다.'); 
+        if(code !== 'SU') return;
+
+        if(!user) return;
+        navigator(USER_PAGE_PATH(user.email));
+      });
+
+// !
     }
     else {
 
       // todo : boardNumber 받아오기 //
       const data:PatchBoardRequestDto = {
-        boardNumber: 1,
         title: boardTitle,
         content: boardContent,
         imageUrl: '',
       }
     }
-    // resetBoard();
+   
   }
 
   //              effect              //
