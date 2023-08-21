@@ -1,15 +1,17 @@
 import { useState, useEffect, ChangeEvent } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
 
-import { BoardDetailResponseDto, CommentListResponseDto, FavoriteListResponseDto } from 'src/interfaces/response';
 import { usePagination } from 'src/hooks';
 import { useUserStore } from 'src/stores';
 import CommentListItem from 'src/components/CommentListItem';
 import Pagination from 'src/components/Pagination';
-import { boardDetailMock, commentListMock, favoriteListMock } from 'src/mocks';
 import { COUNT_BY_PAGE_COMMENT, MAIN_PATH, UPDATE_PATH, USER_PAGE_PATH } from 'src/constants';
 
+import { getBoardRequest, getCommentListRequest, getFavoriteListRequest } from 'src/apis';
+import { GetBoardResponseDto, GetCommentListResponseDto, GetFavoriteListResponseDto } from 'src/interfaces/response/board';
+import { FavoriteListResponseDto } from 'src/interfaces/response/board/get-favorite-list.response.dto';
+import { CommentListResponseDto } from 'src/interfaces/response/board/get-comment-list.response.dto';
+import ResponseDto from 'src/interfaces/response/response.dto';
 import './style.css';
 
 //              component             //
@@ -26,7 +28,7 @@ export default function BoardDetail() {
   const { totalPage, currentPage, currentSection, onPageClickHandler, onPreviousClickHandler, onNextClickHandler, changeSection } = usePagination();
 
   // description : 게시물 정보 상태 //
-  const [board, setBoard] = useState<BoardDetailResponseDto | null>(null);
+  const [board, setBoard] = useState<GetBoardResponseDto | null>(null);
   // description : 게시물 좋아요 회원 리스트 상태 //
   const [favoriteList, setFavoriteList] = useState<FavoriteListResponseDto[]>([]);
   // description : 댓글 리스트 상태 //
@@ -43,12 +45,58 @@ export default function BoardDetail() {
   // description : 페이지 이동을 위한 네비게이터 함수 //
   const navigator = useNavigate();
   // description : 현재 페이지의 댓글 리스트 분류 함수 //
-  const getPageCommentList = () => {
-    const lastIndex = commentListMock.length > COUNT_BY_PAGE_COMMENT * currentPage ? 
-                      COUNT_BY_PAGE_COMMENT * currentPage : commentListMock.length;
+  const getPageCommentList = (commentList: CommentListResponseDto[]) => {
+    const lastIndex = commentList.length > COUNT_BY_PAGE_COMMENT * currentPage ? 
+                      COUNT_BY_PAGE_COMMENT * currentPage : commentList.length;
     const startIndex = COUNT_BY_PAGE_COMMENT * (currentPage -1);
-    const pageCommentList = commentListMock.slice(startIndex, lastIndex);
+    const pageCommentList = commentList.slice(startIndex, lastIndex);
     setPageCommentList(pageCommentList);
+  }
+  // description : 게시물 불러오기 응답 함수 //
+  const getBoardResponseHandler = (responseBody: GetBoardResponseDto | ResponseDto) => {
+    const { code } = responseBody;
+
+    if(code === 'NB') alert('존재하지 않는 게시물입니다.');
+    if(code === 'VF') alert('게시물 번호가 잘못되었습니다.');
+    if(code === 'DE') alert('데이터 베이스 에러입니다.');
+    if(code !== 'SU') {
+      navigator(MAIN_PATH);
+      return;
+    }
+    setBoard(responseBody as GetBoardResponseDto);
+
+  }
+  // description : 좋아요 리스트 불러오기 응답 함수 //
+  const getFavoriteResponseHandler = (responseBody: GetFavoriteListResponseDto | ResponseDto) => {
+    const { code } = responseBody;
+
+    if(code === 'VF') alert('게시물 번호가 잘못되었습니다.');
+    if(code === 'DE') alert('데이터 베이스 에러입니다.');
+    if(code !== 'SU') {
+      setFavoriteList([]);
+      return;
+    }
+
+    const { favoriteList } = responseBody as GetFavoriteListResponseDto;
+    setFavoriteList(favoriteList);
+  }
+  // description : 댓글 리스트 불러오기 응답 처리 함수 //
+  const getCommentListResponseHandler = (responseBody: GetCommentListResponseDto | ResponseDto) => {
+    const { code } = responseBody;
+
+    if(code === 'VF') alert('게시물 번호가 잘못되었습니다.');
+    if(code === 'DE') alert('데이터 베이스 에러입니다.');
+    if(code !== 'SU') {
+      setCommentList([]);
+      return;
+    }
+
+    const { commentList } = responseBody as GetCommentListResponseDto;
+    setCommentList(commentList);
+
+    getPageCommentList(commentList);
+
+    changeSection(commentList.length, COUNT_BY_PAGE_COMMENT);
   }
 
   //              event handler              //
@@ -84,14 +132,7 @@ export default function BoardDetail() {
   }
   // description : 삭제 버튼 클릭 이벤트 //
   const onDeleteButtonClickHandler = () => {
-
-    axios.delete('url').then((response) => {
-      navigator(MAIN_PATH);
-    }).catch((error) => {
-
-    });
-
-    // navigator(MAIN_PATH);
+ 
   }
   // description : 좋아요 버튼 클릭 이벤트 //
   const onFavoriteButtonClickHandler = () => {
@@ -109,14 +150,15 @@ export default function BoardDetail() {
   //              effect              //
   // description : 좋아요 리스트가 변경되면 실행 //
   useEffect (() => {
-    const favorited = favoriteList.findIndex((item) => item.favoriteUserEmail === user?.email);
+    const favorited = favoriteList.findIndex((item) => item.email === user?.email);
     setFavorite(favorited !== -1);
   }, [favoriteList]);
-  //스코프에 favoriteList 넣어서 쳐다보게 함
+  
   // description : 게시물 번호 혹은 로그인 유저 정보가 변경되면 실행 //
   useEffect(() => {
+
     setViewMore(user?.email === board?.writerEmail);
-    const favorited = favoriteList.findIndex((item) => item.favoriteUserEmail === user?.email); // findIndex : 배열안의 내용물이 객체일 때 존재하면 그 객체가 배열 안에서 몇번째인지 number 반환
+    const favorited = favoriteList.findIndex((item) => item.email === user?.email); // findIndex : 배열안의 내용물이 객체일 때 존재하면 그 객체가 배열 안에서 몇번째인지 number 반환
     setFavorite(favorited !== -1);
   }, [boardNumber, user]);
 
@@ -125,14 +167,14 @@ export default function BoardDetail() {
       <div className='board-detail-container'>
         <div className='board-detail-top'>
           <div className='board-detail-title-container'>
-            <div className='board-detail-title'>{ board?.boardTitle }</div>
+            <div className='board-detail-title'>{ board?.title }</div>
           </div>
           <div className='board-detail-meta-container'>
             <div className='board-detail-meta-left'>
               <div className='board-detail-writer-profile-image' style={{ backgroundImage: `url(${board?.writerProfileImage})` }} ></div>
-              <div className='board-detail-writer-nickname' onClick={onWriterNicknameClickHandler}>{ board?.writerNickName }</div>
+              <div className='board-detail-writer-nickname' onClick={onWriterNicknameClickHandler}>{ board?.writerNickname }</div>
               <div className='board-detail-write-date'>{'\|'}</div>
-              <div className='board-detail-write-date'> { board?.writerDate }</div>
+              <div className='board-detail-write-date'> { board?.writeDatetime }</div>
             </div>
             <div className='board-detail-meta-right'>
               {openMore && (
@@ -152,9 +194,9 @@ export default function BoardDetail() {
         </div>
         <div className='divider'></div>
         <div className='board-detail-middle'>
-          <div className='board-detail-content'>{ board?.boardContent }</div>
+          <div className='board-detail-content'>{ board?.content }</div>
           <div className='board-detail-image-box'>
-            <img className='board-detail-image' src={ board?.boardImage } />
+            <img className='board-detail-image' src={ board?.imageUrl ? board?.imageUrl : '' } />
           </div>
         </div>
         <div className='board-detail-bottom'>
@@ -200,8 +242,8 @@ export default function BoardDetail() {
         <div className='favorite-list-container'>
           { favoriteList.map((item) => (
             <div className='favorite-list-item'>
-              <div className='favorite-user-profile' style={{backgroundImage: `url(${item.favoriteUserProfileImage})`}}></div>
-              <div className='favorite-user-nickname'>{ item.favoriteUserNickname }</div>
+              <div className='favorite-user-profile' style={{backgroundImage: `url(${item.profileImageUrl})`}}></div>
+              <div className='favorite-user-nickname'>{ item.nickname }</div>
             </div>
           ))}
         </div>  
@@ -264,22 +306,26 @@ export default function BoardDetail() {
   //              effect              //
   // description : 게시물 번호가 바뀔 때마다 새로운 정보 받아오기 //
   useEffect(() => {
-    setBoard(boardDetailMock);
-    setFavoriteList(favoriteListMock);
-    setCommentList(commentListMock); 
 
-    getPageCommentList();
+    if(!boardNumber) {
+      alert('게시물 번호가 잘못되었습니다.');
+      navigator(MAIN_PATH);
+      return;
+    }
 
-    changeSection(commentListMock.length, COUNT_BY_PAGE_COMMENT);
+    getBoardRequest(boardNumber).then(getBoardResponseHandler);
+    getFavoriteListRequest(boardNumber).then(getFavoriteResponseHandler);
+    getCommentListRequest(boardNumber).then(getCommentListResponseHandler);
+
+    
   }, [boardNumber]);
   // description : 현재 페이지가 바뀔 떄마다 검색 게시물 분류하기 //
   useEffect(() => {
-    getPageCommentList();
+    getPageCommentList(commentList);
   }, [currentPage]);
   // description : 현재 페이지가 바뀔 때마다 페이지 리스트 변경 //
-  //! 페이지네이션 다시 보기 3까지 나와야 함 
   useEffect (() => {
-    changeSection(commentListMock.length, COUNT_BY_PAGE_COMMENT);
+    changeSection(commentList.length, COUNT_BY_PAGE_COMMENT);
   }, [currentSection]);
 
   //              render              //

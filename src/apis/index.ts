@@ -3,7 +3,7 @@ import axios from 'axios';
 import { SignUpRequestDto, SignInRequestDto } from 'src/interfaces/request/auth';
 import { PatchBoardRequestDto, PostBoardRequestDto } from 'src/interfaces/request/board';
 import { SignInResponseDto, SignUpResponseDto } from 'src/interfaces/response/auth';
-import { PatchBoardResponseDto, PostBoardResponseDto } from 'src/interfaces/response/board';
+import { GetBoardResponseDto, GetCommentListResponseDto, GetFavoriteListResponseDto, PatchBoardResponseDto, PostBoardResponseDto } from 'src/interfaces/response/board';
 import ResponseDto from 'src/interfaces/response/response.dto';
 import { GetLoginUserResponseDto, GetUserResponseDto } from 'src/interfaces/response/user';
 
@@ -110,25 +110,40 @@ export const getRelationListRequest = async (searchWord:string) => {
 }
 
 export const getBoardRequest = async (boardNumber:number | string) => {
-    const result = await axios.get(GET_BOARD_URL(boardNumber)).then((response) => {
-        return response;
-    }).catch((error) => null);
+    const result = await axios.get(GET_BOARD_URL(boardNumber))
+        .then((response) => {
+            const responseBody: GetBoardResponseDto = response.data;
+            return responseBody;
+        }).catch((error) => {
+            const responseBody: ResponseDto = error.response.data;
+            return responseBody;
+        });
 
     return result;
 }
 
 export const getFavoriteListRequest = async (boardNumber:number | string) => {
-    const result = await axios.get(GET_FAVORITE_LIST_URL(boardNumber)).then((response) => {
-        return response;
-    }).catch((error) => null);
+        const result = await axios.get(GET_FAVORITE_LIST_URL(boardNumber))
+        .then((response) => {
+            const responseBody: GetFavoriteListResponseDto = response.data;
+            return responseBody;
+        }).catch((error) => {
+            const responseBody: ResponseDto = error.response.data;
+            return responseBody;
+        });
 
     return result;
 }
 
 export const getCommentListRequest = async (boardNumber:number | string) => {
-    const result = await axios.get(GET_COMMENT_LIST_URL(boardNumber)).then((response) => {
-        return response;
-    }).catch((error) => null);
+        const result = await axios.get(GET_COMMENT_LIST_URL(boardNumber))
+        .then((response) => {
+            const responseBody: GetCommentListResponseDto = response.data;
+            return responseBody;
+        }).catch((error) => {
+            const responseBody: ResponseDto = error.response.data;
+            return responseBody;
+        });
 
     return result;
 }
@@ -149,7 +164,6 @@ export const postCommentRequest = async (boardNumber: number | string, data:any)
     return result;
 }
 
-// !
 export const patchBoardRequest = async (boardNumber: number | string, data:PatchBoardRequestDto, token:string) => {
     const result = await axios.patch(PATCH_BOARD_URL(boardNumber), data, { headers: { Authorization: `Bearer ${token}` } })
         .then((response) => {

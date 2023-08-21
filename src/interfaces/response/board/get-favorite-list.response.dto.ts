@@ -4,7 +4,7 @@ export default interface GetFavoriteListResponseDto extends ResponseDto {
     favoriteList : FavoriteListResponseDto[];
 }
 
-interface FavoriteListResponseDto {
+export interface FavoriteListResponseDto {
     nickname: string;
     email : string;
     profileImageUrl : string;

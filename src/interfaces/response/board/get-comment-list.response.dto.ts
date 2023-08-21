@@ -4,7 +4,7 @@ export default interface GetCommentListResponseDto extends ResponseDto {
     commentList : CommentListResponseDto[];
 }
 
-interface CommentListResponseDto {
+export interface CommentListResponseDto {
     profileImageUrl : string; 
     nickname : string;
     content : string;
