@@ -1,9 +1,9 @@
 import axios from 'axios';
 
 import { SignUpRequestDto, SignInRequestDto } from 'src/interfaces/request/auth';
-import { PostBoardRequestDto } from 'src/interfaces/request/board';
+import { PatchBoardRequestDto, PostBoardRequestDto } from 'src/interfaces/request/board';
 import { SignInResponseDto, SignUpResponseDto } from 'src/interfaces/response/auth';
-import { PostBoardResponseDto } from 'src/interfaces/response/board';
+import { PatchBoardResponseDto, PostBoardResponseDto } from 'src/interfaces/response/board';
 import ResponseDto from 'src/interfaces/response/response.dto';
 import { GetLoginUserResponseDto, GetUserResponseDto } from 'src/interfaces/response/user';
 
@@ -37,7 +37,7 @@ const PATCH_USER_NICKNAME_URL = () => `${API_DOMAIN}/user/nickname`;
 const PATCH_USER_PROFILE_URL = () => `${API_DOMAIN}/user/profile`;
 
 const GET_SIGN_IN_USER_URL = () => `${API_DOMAIN}/user`;
-const POST_FILE = () => `${API_DOMAIN}/file/upload`;
+const UPLOAD_FILE = () => `http://localhost:4040/file/upload`;
 
 //! response.data -> 실제로 받는 response body에 대한 내용 //
 export const signUpRequest = async (data:SignUpRequestDto) => {
@@ -149,10 +149,18 @@ export const postCommentRequest = async (boardNumber: number | string, data:any)
     return result;
 }
 
-export const patchBoardRequest = async (boardNumber: number | string, data:any) => {
-    const result = await axios.patch(PATCH_BOARD_URL(boardNumber), data).then((response) => {
-        return response;
-    }).catch((error) => null);
+// !
+export const patchBoardRequest = async (boardNumber: number | string, data:PatchBoardRequestDto, token:string) => {
+    const result = await axios.patch(PATCH_BOARD_URL(boardNumber), data, { headers: { Authorization: `Bearer ${token}` } })
+        .then((response) => {
+            const responseBody: PatchBoardResponseDto = response.data;
+            const { code } = responseBody;
+            return code;
+        }).catch((error) => {
+            const responseBody: ResponseDto = error.response.data;
+            const { code } = responseBody;
+            return code;
+        });
 
     return result;
 }
@@ -202,7 +210,7 @@ export const getSignInUserRequest = async (token:string) => {
 //- Get방식은 responseBody로 보낼거임 //
 
 export const uploadFileRequest = async (data: FormData) => {
-    const result = await axios.post(POST_FILE(), data, { headers: { 'Content-Type': 'multipart/form-data' } })
+    const result = await axios.post(UPLOAD_FILE(), data, { headers: { 'Content-Type': 'multipart/form-data' } })
         .then((response) => {
             const imageUrl: string = response.data;
             return imageUrl;

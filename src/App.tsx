@@ -12,14 +12,13 @@ import BoardDetail from 'src/views/Board/Detail';
 import BoardWrite from 'src/views/Board/Write';
 import BoardUpdate from 'src/views/Board/Update';
 
-import './App.css';
 import { AUTH_PATH, BOARD_NUMBER_PATH_VARIABLE, BOARD_PATH, DETAIL_PATH, MAIN_PATH, SEARCH_PATH, SEARCH_WORD_PATH_VARIABLE, UPDATE_PATH, USER_EMAIL_PATH_VARIABLE, USER_PAGE_PATH, WRITE_PATH } from './constants';
 import { useEffect } from 'react';
-import axios from 'axios';
 import { useUserStore } from './stores';
 import { getSignInUserRequest } from './apis';
 import { GetLoginUserResponseDto } from './interfaces/response/user';
 import ResponseDto from './interfaces/response/response.dto';
+import './App.css';
 
 // 메인화면         - path: '/' / component : <Main />
 // 로그인 / 회원가입 - path: '/auth' / component : <Authentication />

@@ -16,6 +16,8 @@
 }
 
 .board-write-title-input {
+    width: 100%;
+
     border: none;
     outline: none;
     background: none;
