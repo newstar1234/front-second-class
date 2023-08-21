@@ -16,13 +16,11 @@ export default function Header() {
   //              state             //
   //description : url 경로 상태 //
   const { pathname } = useLocation();
-  // description : PathVariable 상태 //
-  const {boardNumber, searchWord, userEmail} = useParams();
 
-  //description : 게시물 작성 데이터 상태 //
-  const { boardTitle, boardContent, boardImage, resetBoard } = useBoardWriteStore();
   // description : 로그인 유저 정보 상태  //
   const { user, setUser } = useUserStore();
+  //description : 게시물 작성 데이터 상태 //
+  const { boardNumber, boardTitle, boardContent, boardImage, resetBoard } = useBoardWriteStore();
   
   // description : Cookie 상태 //
   const [cookies, setCookie] = useCookies();
@@ -61,17 +59,17 @@ export default function Header() {
   }
 
   // description : 게시물 수정 요청 함수 //
-  const patchBoardResponseHandler = (code:string) => {
-    if(code === 'NE') alert('존재하지 않는 회원입니다.');
-    if(code === 'NB') alert('존재하지 않는 게시물입니다.');
-    if(code === 'NP') alert('권한이 없습니다.');
-    if(code === 'VF') alert('필수 데이터를 입력하지 않았습니다.');
-    if(code === 'DE') alert('데이터 베이스 에러입니다.'); 
-    if(code !== 'SU') return;
+  const patchBoardResponseHandler = (code: string) => {
+    if (code === 'NE') alert('존재하지 않는 회원입니다.');
+    if (code === 'NB') alert('존재하지 않는 게시물입니다.');
+    if (code === 'NP') alert('권한이 없습니다.');
+    if (code === 'VF') alert('필수 데이터를 입력하지 않았습니다.');
+    if (code === 'DE') alert('데이터베이스 에러입니다.');
+    if (code !== 'SU') return;
 
     resetBoard();
 
-    if(!boardNumber) return;
+    if (!boardNumber) return;
     navigator(BOARD_DETAIL_PATH(boardNumber));
   }
 

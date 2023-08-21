@@ -5,7 +5,7 @@ import { usePagination } from 'src/hooks';
 import { useUserStore } from 'src/stores';
 import CommentListItem from 'src/components/CommentListItem';
 import Pagination from 'src/components/Pagination';
-import { COUNT_BY_PAGE_COMMENT, MAIN_PATH, UPDATE_PATH, USER_PAGE_PATH } from 'src/constants';
+import { BOARD_UPDATE_PATH, COUNT_BY_PAGE_COMMENT, MAIN_PATH, UPDATE_PATH, USER_PAGE_PATH } from 'src/constants';
 
 import { getBoardRequest, getCommentListRequest, getFavoriteListRequest } from 'src/apis';
 import { GetBoardResponseDto, GetCommentListResponseDto, GetFavoriteListResponseDto } from 'src/interfaces/response/board';
@@ -119,7 +119,7 @@ export default function BoardDetail() {
   // description : 작성자 닉네임 클릭 이벤트 //
   const onWriterNicknameClickHandler = () => {
     if(!board) return;
-    navigator(USER_PAGE_PATH(board?.writerEmail)); // undefind가 있어서 없으면 리턴하게끔 해줘야함 
+    navigator(USER_PAGE_PATH(board.writerEmail)); // undefind가 있어서 없으면 리턴하게끔 해줘야함 
   }
   // description : more 버튼 클릭 이벤트 //
   const onMoreButtonClickHandler = () => {
@@ -128,7 +128,7 @@ export default function BoardDetail() {
   // description : 수정 버튼 클릭 이벤트 //
   const onUpdateButtonClickHandler = () => {
     if(!board) return;
-    navigator(UPDATE_PATH(board?.boardNumber));
+    navigator(BOARD_UPDATE_PATH(board.boardNumber));
   }
   // description : 삭제 버튼 클릭 이벤트 //
   const onDeleteButtonClickHandler = () => {

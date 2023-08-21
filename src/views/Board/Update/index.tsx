@@ -1,7 +1,10 @@
 import { ChangeEvent, useRef, useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useBoardWriteStore } from 'src/stores';
-import { boardUpdateMock } from 'src/mocks';
+import { MAIN_PATH } from 'src/constants';
+import { getBoardRequest } from 'src/apis';
+import { GetBoardResponseDto } from 'src/interfaces/response/board';
+import ResponseDto from 'src/interfaces/response/response.dto';
 import './style.css';
 
 //              component             //
@@ -18,12 +21,31 @@ export default function BoardUpdate() {
   const { boardNumber } = useParams();
 
   // description : 게시물 정보를 저장할 상태 //
-  const { boardTitle, boardContent, boardImage, setBoardTitle, setBoardContent, setBoardImage } = useBoardWriteStore();
+  const { boardTitle, boardContent, boardImage, setBoardNumber, setBoardTitle, setBoardContent, setBoardImage } = useBoardWriteStore();
   
   // description : 이미지를 저장할 상태 //
-  const [baardImageUrl, setBoardImageUrl] =useState<string>('');
+  const [baardImageUrl, setBoardImageUrl] =useState<string | null>(null);
 
   //              function             //
+  const navigator = useNavigate();
+
+  // description : 게시물 불러오기 응답 처리 함수 //
+  const getBoardResponseHandler = (responseBody: GetBoardResponseDto | ResponseDto) => {
+    const { code } = responseBody;
+
+    if(code === 'NB') alert('존재하지 않는 게시물입니다.');
+    if(code === 'VF') alert('잘못된 게시물 번호입니다.');
+    if(code === 'DE') alert('데이터 베이스 에러입니다.');
+    if(code !== 'SU') {
+      navigator(MAIN_PATH);
+      return;
+    }
+
+    const { title, content, imageUrl } = responseBody as GetBoardResponseDto;
+    setBoardTitle(title);
+    setBoardContent(content);
+    setBoardImageUrl(imageUrl);
+  }
 
   //              event handler             //
   // description : 제목이 바뀔시 실행될 이벤트 //
@@ -60,9 +82,14 @@ export default function BoardUpdate() {
 
   //              effect             //
   useEffect(() => {
-    setBoardTitle(boardUpdateMock.boardTitle);
-    setBoardContent(boardUpdateMock.boardContent);
-    setBoardImageUrl(boardUpdateMock.boardImage);
+    if(!boardNumber) {
+      alert('게시물 번호가 잘못되었습니다.');
+      navigator(MAIN_PATH);
+      return;
+    }
+
+    setBoardNumber(boardNumber);
+    getBoardRequest(boardNumber).then(getBoardResponseHandler);
   }, [boardNumber]);
 
   //              render              //

@@ -24,8 +24,8 @@ export const AUTH_PATH = '/auth';
 export const BOARD_PATH = '/board';
 export const WRITE_PATH = 'write';
 
-export const DETAIL_PATH = (boardNumber:number | string) => `detail/${boardNumber}`;
-export const UPDATE_PATH = (boardNumber:number | string) => `update/${boardNumber}`;
+export const DETAIL_PATH = (boardNumber: number | string) => `detail/${boardNumber}`;
+export const UPDATE_PATH = (boardNumber: number | string) => `update/${boardNumber}`;
 
 export const BOARD_WRITE_PATH = () => `${BOARD_PATH}/${WRITE_PATH}`;
 
