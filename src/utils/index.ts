@@ -10,3 +10,10 @@ export const getPagination = (boardCount: number, currentSection:number, countBy
 
     return{ section, maxPage, minPage, totalPageCount };
 }
+
+export const dateFormat = (datetime : string) => {
+    const date = new Date(datetime);
+    date.setHours(date.getHours() -9);
+
+    return `${date.getFullYear()}. ${date.getMonth() +1}. ${date.getDate()}.`;
+}
