@@ -6,8 +6,8 @@ import { useBoardWriteStore, useUserStore } from 'src/stores';
 import { AUTH_PATH, BOARD_DETAIL_PATH, BOARD_UPDATE_PATH, BOARD_WRITE_PATH, MAIN_PATH, SEARCH_PATH, USER_PAGE_PATH } from 'src/constants';
 import PatchBoardRequestDto from 'src/interfaces/request/board/patch-board.request.dto';
 import { patchBoardRequest, postBoardRequest, uploadFileRequest } from 'src/apis';
-import './style.css';
 import { PostBoardRequestDto } from 'src/interfaces/request/board';
+import './style.css';
 
 //              component             //
 // description : Header 레이아웃 //

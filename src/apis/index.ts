@@ -1,9 +1,9 @@
 import axios from 'axios';
 
 import { SignUpRequestDto, SignInRequestDto } from 'src/interfaces/request/auth';
-import { PatchBoardRequestDto, PostBoardRequestDto } from 'src/interfaces/request/board';
+import { PatchBoardRequestDto, PostBoardRequestDto, PostCommentRequestDto } from 'src/interfaces/request/board';
 import { SignInResponseDto, SignUpResponseDto } from 'src/interfaces/response/auth';
-import { GetBoardResponseDto, GetCommentListResponseDto, GetFavoriteListResponseDto, PatchBoardResponseDto, PostBoardResponseDto } from 'src/interfaces/response/board';
+import { DeleteBoardResponseDto, GetBoardResponseDto, GetCommentListResponseDto, GetFavoriteListResponseDto, PatchBoardResponseDto, PostBoardResponseDto, PostCommentResponseDto, PutFavoriteResponseDto } from 'src/interfaces/response/board';
 import ResponseDto from 'src/interfaces/response/response.dto';
 import { GetLoginUserResponseDto, GetUserResponseDto } from 'src/interfaces/response/user';
 
@@ -147,20 +147,33 @@ export const getCommentListRequest = async (boardNumber:number | string) => {
 
     return result;
 }
-//!
+
 export const putFavoriteRequest = async (boardNumber: number | string, token: string) => {
-    const result = await axios.put(PUT_FAVORITE_URL(boardNumber), { headers : { Authorization: `Bearer ${token}` } })
+    const result = await axios.put(PUT_FAVORITE_URL(boardNumber), {}, { headers : { Authorization: `Bearer ${token}` } })
         .then((response) => {
-            return response;
-        }).catch((error) => null);
+            const responseBody: PutFavoriteResponseDto = response.data;
+            const { code } = responseBody;
+            return code;
+        }).catch((error) => {
+            const responseBody:ResponseDto = error.response.data;
+            const { code } = responseBody;
+            return code;
+        });
 
     return result;
 }
 
-export const postCommentRequest = async (boardNumber: number | string, data:any) => {
-    const result = await axios.post(POST_COMMENT_URL(boardNumber), data).then((response) => {
-        return response;
-    }).catch((error) => null);
+export const postCommentRequest = async (boardNumber: number | string, data:PostCommentRequestDto, token: string) => {
+    const result = await axios.post(POST_COMMENT_URL(boardNumber), data, { headers : { Authorization: `Bearer ${token}` } })
+        .then((response) => {
+            const responseBody: PostCommentResponseDto = response.data;
+            const { code } = responseBody;
+            return code;
+        }).catch((error) => {
+            const responseBody: ResponseDto = error.response.data;
+            const { code } = responseBody;
+            return code;
+        });
 
     return result;
 }
@@ -180,10 +193,17 @@ export const patchBoardRequest = async (boardNumber: number | string, data:Patch
     return result;
 }
 
-export const deleteBoardRequest = async (boardNumber: number | string) => {
-    const result = await axios.delete(DELETE_BOARD_URL(boardNumber)).then((response) => {
-        return response;
-    }).catch((error) => null);
+export const deleteBoardRequest = async (boardNumber: number | string, token: string) => {
+    const result = await axios.delete(DELETE_BOARD_URL(boardNumber), { headers: { Authorization: `Bearer ${token}` } })
+        .then((response) => {
+            const responseBody: DeleteBoardResponseDto = response.data;
+            const { code } = responseBody;
+            return code;
+        }).catch((error) => {
+            const responseBody: ResponseDto = error.response.data;
+            const { code } = responseBody;
+            return code;
+        });
 
     return result;
 }
