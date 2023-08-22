@@ -10,10 +10,10 @@ import Pagination from 'src/components/Pagination';
 import { currentBoardListMock, popularWordListMock, top3ListMock } from 'src/mocks';
 import { COUNT_BY_PAGE, SEARCH_PATH } from 'src/constants';
 
-import './style.css';
 import { getPopularListRequest } from 'src/apis';
 import { GetPopularListResponseDto } from 'src/interfaces/response/search';
 import ResponseDto from 'src/interfaces/response/response.dto';
+import './style.css';
 
 //            component            //
 // description: 메인 화면 컴포넌트 //
@@ -104,8 +104,6 @@ export default function Main() {
         setCurrentList(currentBoardListMock);
       });
 
-      // changeSection(72, COUNT_BY_PAGE);
-      // if(!currentList.length) setCurrentList(currentBoardListMock);
     }, [currentSection]);
 
     //              render              // 
