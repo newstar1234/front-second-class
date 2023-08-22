@@ -1,4 +1,4 @@
-import { CommentListResponseDto } from 'src/interfaces/response';
+import { CommentListResponseDto } from 'src/interfaces/response/board/get-comment-list.response.dto';
 import './style.css';
 
 interface Props {
@@ -11,7 +11,7 @@ export default function CommentListItem({ item }:Props) {
 
   //              state             //
   // description : 속성으로 받아오는 댓글 관련 상태 //
-  const { writerProfileImage, writerNickName, writeTime, comment } = item;
+  const { writeDatetime, content, nickname, profileImageUrl } = item;
 
   //              function              //
 
@@ -26,18 +26,18 @@ export default function CommentListItem({ item }:Props) {
     <div className='comment-list-item-box'>
       <div className='comment-list-item-writer'>
         <div className='comment-list-item-profile'>
-          <div className='comment-list-item-profile-image' style={{ backgroundImage: `url(${ writerProfileImage })` }}></div>
+          <div className='comment-list-item-profile-image' style={{ backgroundImage: `url(${ profileImageUrl })` }}></div>
         </div>
         <div className='comment-list-item-writer-nickname'>
-          { writerNickName }
+          { nickname }
         </div>
         <div className='comment-list-item-writer-divider'>|</div>
         <div className='comment-list-item-write-time'>
-          { writeTime }
+          { writeDatetime }
         </div>
       </div>
       <div className='comment-list-item-comment'>
-        { comment }
+        { content }
       </div>
     </div>
   )

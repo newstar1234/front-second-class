@@ -7,7 +7,7 @@ import CommentListItem from 'src/components/CommentListItem';
 import Pagination from 'src/components/Pagination';
 import { BOARD_UPDATE_PATH, COUNT_BY_PAGE_COMMENT, MAIN_PATH, USER_PAGE_PATH } from 'src/constants';
 
-import { getBoardRequest, getCommentListRequest, getFavoriteListRequest, postCommentRequest, putFavoriteRequest } from 'src/apis';
+import { deleteBoardRequest, getBoardRequest, getCommentListRequest, getFavoriteListRequest, postCommentRequest, putFavoriteRequest } from 'src/apis';
 import { GetBoardResponseDto, GetCommentListResponseDto, GetFavoriteListResponseDto } from 'src/interfaces/response/board';
 import { FavoriteListResponseDto } from 'src/interfaces/response/board/get-favorite-list.response.dto';
 import { CommentListResponseDto } from 'src/interfaces/response/board/get-comment-list.response.dto';
@@ -119,7 +119,7 @@ export default function BoardDetail() {
   const [favorite, setFavorite] = useState<boolean>(false);
 
   //              function              //
-  // description : 좋아요 버튼 응답 처리 함수 //
+  // description : 좋아요 응답 처리 함수 //
   const putFavoriteResponseHandler = (code: string) => {
     if(code === 'NU') alert('존재하지 않는 유저입니다.');
     if(code === 'NB') alert('존재하지 않는 게시물입니다.');
@@ -129,6 +129,19 @@ export default function BoardDetail() {
 
     if(!boardNumber) return;
     getFavoriteListRequest(boardNumber).then(getFavoriteResponseHandler);
+  }
+
+  // description : 게시글 삭제 응답 처리 함수 //
+  const deleteBoardResponseHandler = (code: string) => {
+    if(code === 'NU') alert('존재하지 않는 유저입니다.');
+    if(code === 'NB') alert('존재하지 않는 게시물입니다.');
+    if(code === 'NP') alert('권한이 없습니다.');
+    if(code === 'VF') alert('잘못된 입력입니다.');
+    if(code === 'DE') alert('데이터 베이스 에러입니다.');
+    if(code !== 'SU') return;
+
+    alert('게시물 삭제 성공!');
+    navigator(MAIN_PATH);
   }
 
   //              event handler              //
@@ -146,9 +159,13 @@ export default function BoardDetail() {
     if(!board) return;
     navigator(BOARD_UPDATE_PATH(board.boardNumber));
   }
+  //!
   // description : 삭제 버튼 클릭 이벤트 //
   const onDeleteButtonClickHandler = () => {
- 
+    if(!boardNumber) return;
+
+    const token = cookies.accessToken;
+    deleteBoardRequest(boardNumber, token).then(deleteBoardResponseHandler);
   }
   
   // description : 좋아요 버튼 클릭 이벤트 //
@@ -297,7 +314,7 @@ export default function BoardDetail() {
     const onCommentChangeHandler = (event:ChangeEvent<HTMLTextAreaElement>) => {
       setComment(event.target.value);
     }
-    //!
+ 
     // description : 댓글 작성 버튼 클릭 이벤트 //
     const onCommentButtonClickHandler = () => {
       if(!boardNumber) return;

@@ -11,6 +11,9 @@ import { currentBoardListMock, popularWordListMock, top3ListMock } from 'src/moc
 import { COUNT_BY_PAGE, SEARCH_PATH } from 'src/constants';
 
 import './style.css';
+import { getPopularListRequest } from 'src/apis';
+import { GetPopularListResponseDto } from 'src/interfaces/response/search';
+import ResponseDto from 'src/interfaces/response/response.dto';
 
 //            component            //
 // description: 메인 화면 컴포넌트 //
@@ -32,16 +35,7 @@ export default function Main() {
 
     //                effect                // 
     // description: 첫 시작 시 인기 게시물 데이터 불러오기 // 
-    useEffect( () => {
-
-      axios.get('url').then((response) => {
-        setTop3List(response.data);
-      }).catch((error) => {
-        setTop3List(top3ListMock);
-      });
-
-      // if(!top3List.length) setTop3List(top3ListMock);
-    }, [] );
+    useEffect( () => { }, [] );
 
     //                render                // 
     return (
@@ -75,6 +69,15 @@ export default function Main() {
     const [popularList, setPopularList] = useState<string[]>([]);
  
     //                function              //
+    // description : 인기검색어 불러오기 응답 처리 함수 //
+    const getPopularListResponseHandler = (responseBody: GetPopularListResponseDto | ResponseDto) => {
+      const { code } = responseBody;
+      if(code === 'DE') alert('데이터 베이스 에러입니다.');
+      if(code !== 'SU') return;
+
+      const { popularList } = responseBody as GetPopularListResponseDto;
+      setPopularList(popularList);
+    }
 
     //             event handler            // 
     // description: 인기 검색어 클릭 이벤트 //
@@ -87,14 +90,7 @@ export default function Main() {
     //              effect              //
     // description: 첫 시작시 인기 검색어 리스트 불러오기 //
     useEffect(() => {
-
-      axios.get('url').then((response) => {
-        setPopularList(response.data);
-      }).catch((error) => {
-        setPopularList(popularWordListMock);
-      });
-
-      // if(!popularList.length) setPopularList(popularWordListMock);
+      getPopularListRequest().then(getPopularListResponseHandler);
     }, []);
 
     // description: 현재 섹션이 바뀔 때마다 페이지 리스트 변경 및 최신 게시물 불러오기 //

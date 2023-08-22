@@ -81,6 +81,7 @@ export default function BoardUpdate() {
   //              component             //
 
   //              effect             //
+  // description : 게시물 불러오기 //
   useEffect(() => {
     if(!boardNumber) {
       alert('게시물 번호가 잘못되었습니다.');
