@@ -41,20 +41,20 @@ export default function UserPage() {
     // description: 사용자 프로필 사진 URL 상태 //
     const [profileImageUrl, setProfileImageUrl] = useState<string>(DefaultProflie);
     // description: 사용자 닉네임 상태 //
-    const [nickname, setNickname] = useState<string>('아이디');
+    const [nickname, setNickname] = useState<string>('나는주코야키');
     // description: 닉네임 변경 버튼 상태 //
     const [nicknameChange, setNicknameChange] = useState<boolean>(false);
 
     //          function          //
-    const getUserResponseHandler = (result : GetUserResponseDto | ResponseDto) => {
-      const  { code } = result;
-      if ( code === 'NU' ) alert('존재하지 않는 유저입니다.');
-      if ( code === 'DE' ) alert('데이터 베이스 오류입니다.');
-      if ( code !== 'SU' ) navigator(MAIN_PATH);
+    const getUserResponseHandler = (result: GetUserResponseDto | ResponseDto) => {
+      const { code } = result;
+      if (code === 'NU') alert('존재하지 않는 유저입니다.');
+      if (code === 'DE') alert('데이터베이스 오류입니다.');
+      if (code !== 'SU') navigator(MAIN_PATH);
 
       const { nickname, profileImageUrl } = result as GetUserResponseDto;
       setNickname(nickname);
-      if(profileImageUrl) setProfileImageUrl(profileImageUrl);
+      if (profileImageUrl) setProfileImageUrl(profileImageUrl);
       else setProfileImageUrl(DefaultProflie);
     }
 
@@ -94,6 +94,7 @@ export default function UserPage() {
       } else {
         getUserRequest(userEmail as string).then(getUserResponseHandler);
       }
+
     }, [userEmail]);
 
     //          render          //
@@ -162,7 +163,7 @@ export default function UserPage() {
         navigator(AUTH_PATH);
         return;
       }
-      if(!userEmail) return;
+      if (!userEmail) return;
       navigator(USER_PAGE_PATH(userEmail));
     }
 
