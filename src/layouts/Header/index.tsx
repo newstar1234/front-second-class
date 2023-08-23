@@ -1,4 +1,4 @@
-import { useState, useEffect, ChangeEvent } from 'react'
+import { useState, useEffect, KeyboardEvent, ChangeEvent, useRef } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import {useCookies} from 'react-cookie';
 
@@ -14,6 +14,9 @@ import { PostBoardRequestDto } from 'src/interfaces/request/board';
 export default function Header() {
 
   //              state             //
+  // description : 검색 버튼 Ref 상태 //
+  const searchButtonRef = useRef<HTMLDivElement>(null);
+  
   //description : url 경로 상태 //
   const { pathname } = useLocation();
 
@@ -78,7 +81,7 @@ export default function Header() {
   //description : 현재 페이지가 인증 화면인지 여부 //
   const isAuth = pathname === AUTH_PATH;
   //description : 현재 페이지가 마이페이지인지 여부 // 포함여부로 바꿈
-  const isMyPage = pathname.includes(USER_PAGE_PATH(''));
+  const isMyPage = user && pathname.includes(USER_PAGE_PATH(user.email));
   //description : upload 버튼 출력 여부 //
   const showUpload = pathname === BOARD_WRITE_PATH() || pathname.includes(BOARD_UPDATE_PATH(''));
   //description : upload 버튼 활성화 여부 //
@@ -142,6 +145,13 @@ export default function Header() {
     }
    
   }
+  
+  // description : 검색 인풋창 Enter 이벤트 //
+  const onSearchEnterPressHandler = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key !== 'Enter') return;
+    if (!searchButtonRef.current) return;
+    searchButtonRef.current.click();
+  }
 
   //              effect              //
   // description : 로그인 유저 정보가 바뀔 때마다 실행 //
@@ -166,8 +176,8 @@ export default function Header() {
       <div className='header-right'>
         {(showSearch) && (searchState ? (
             <div className='header-search-box'>
-              <input className='header-search-input' value={search} onChange={onSearchChangeHandler} />
-              <div className='header-icon-box' onClick={onSearchButtonClickHandler}>
+              <input className='header-search-input' value={search} onChange={onSearchChangeHandler} onKeyDown={onSearchEnterPressHandler} />
+              <div ref={searchButtonRef} className='header-icon-box' onClick={onSearchButtonClickHandler}>
                 <div className='header-search-icon'></div>
               </div>
             </div>

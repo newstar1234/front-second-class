@@ -6,11 +6,11 @@ import BoardListItem from 'src/components/BoardListItem';
 import Pagination from 'src/components/Pagination';
 import { COUNT_BY_PAGE, MAIN_PATH, SEARCH_PATH } from 'src/constants';
 
-import { getRelationListRequest } from 'src/apis';
+import { getRelationListRequest, getSearchBoardListRequest } from 'src/apis';
 import { GetRelationListResponseDto } from 'src/interfaces/response/search';
 import ResponseDto from 'src/interfaces/response/response.dto';
+import { BoardListResponseDto, GetSearchBoardResponseDto } from 'src/interfaces/response/board';
 import './style.css';
-import { BoardListResponseDto } from 'src/interfaces/response/board';
 
 //            component             //
 // description : 검색화면 // 
@@ -32,19 +32,35 @@ export default function Search() {
   const [pageBoardList, setPageBoardList] = useState<BoardListResponseDto[]>([]);  //  실제로 보여줘야하는 페이지
   // description : 연관 검색어 리스트 상태 //
   const [relationList, setRelationList] = useState<string[]>([]);
+  // description : 이전 검색어 상태 //
+  const [relationWord, setRelationWord] = useState<string | undefined>(undefined);
 
   //            function            //
   //description : 페이지 이동을 위한 네이게이터 함수 //
   const navigator = useNavigate();
 
   // description: 현재 페이지의 게시물 리스트 분류 함수 //
-  const getPageBoardList = () => {  // 깔끔하게 함수로 
-    const lastIndex = searchList.length > COUNT_BY_PAGE  * currentPage ? COUNT_BY_PAGE * currentPage : searchList.length; //유연하게 // COUNT_BY_PAGE = 5
+  const getPageBoardList = (boardList:BoardListResponseDto[]) => {  // 깔끔하게 함수로 
+    const lastIndex = boardList.length > COUNT_BY_PAGE  * currentPage ? COUNT_BY_PAGE * currentPage : boardList.length; //유연하게 // COUNT_BY_PAGE = 5
     const startIndex = COUNT_BY_PAGE * (currentPage -1);  // pageBoardList를 유연하게 //등차수열
-    const pageBoardList = searchList.slice(startIndex, lastIndex);  //자르는 메서드 slice
+    const pageBoardList = boardList.slice(startIndex, lastIndex);  //자르는 메서드 slice
     
     setPageBoardList(pageBoardList);  //5개 잘라서 넣기
   }
+  // description : 검색 결과 리스트 불러오기 응답 처리 함수 //
+  const getSearchBoardListResponseHandler = (responseBody:GetSearchBoardResponseDto | ResponseDto) => {
+    const { code } = responseBody;
+    if(code === 'VF') alert('잘못된 입력입니다.');
+    if(code === 'DE') alert('데이터 베이스 에러입니다.');
+    if(code !== 'SU') return;
+
+    const { boardList } = responseBody as GetSearchBoardResponseDto;
+    setSearchList(boardList);
+    setBoardCount(boardList.length);
+    getPageBoardList(boardList);
+    changeSection(boardList.length, COUNT_BY_PAGE);
+  }
+
   // description : 연관검색어 리스트 불러오기 응답 처리 함수 //
   const getRelationListResponseHandler = (responseBody:GetRelationListResponseDto | ResponseDto) => {
     const { code } = responseBody;
@@ -55,6 +71,7 @@ export default function Search() {
     const { relationList } = responseBody as GetRelationListResponseDto;
     setRelationList(relationList);
   }
+
 
   //              event handler             //
   // description : 연관 검색어 클릭 이벤트  //
@@ -73,25 +90,19 @@ export default function Search() {
       return;
     }
 
-    //! setSearchList(searchBoardListMock);
-    setBoardCount((searchWord as string).length);
-
+    getSearchBoardListRequest(searchWord, relationWord).then(getSearchBoardListResponseHandler);
     getRelationListRequest(searchWord).then(getRelationListResponseHandler);
-
-    getPageBoardList();
-
-    // changeSection(searchBoardListMock.length, COUNT_BY_PAGE);
-   
+    setRelationWord(searchWord);
   }, [searchWord]);
 
   // description: 현재 섹션이 바뀔 때마다 페이지 리스트 변경 //
   useEffect(() => {
-    // changeSection(searchBoardListMock.length, COUNT_BY_PAGE);
+    if(boardCount) changeSection( boardCount, COUNT_BY_PAGE);
   }, [currentSection]);
 
   // description: 현재 페이지가 바뀔 때마다 검색 게시물 분류하기  //
   useEffect(() => {
-    getPageBoardList();
+    getPageBoardList(searchList);
   }, [currentPage]);
 
   //              render              // 

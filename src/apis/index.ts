@@ -17,7 +17,7 @@ const GET_TOP3_BOARD_LIST_URL = () => `${API_DOMAIN}/board/top-3`;
 const GET_CURRENT_BOARD_LIST_URL = (section: number) => `${API_DOMAIN}/board/current-board/${section}`;
 const GET_POPULAR_LIST_URL = () => `${API_DOMAIN}/search/popular`;
 
-const GET_SEARCH_BOARD_LIST_URL = (searchWord:string) => `${API_DOMAIN}/board/search/${searchWord}`;
+const GET_SEARCH_BOARD_LIST_URL = (searchWord:string, relationWord?:string) => relationWord ? `${API_DOMAIN}/board/search/${searchWord}/${relationWord}` : `${API_DOMAIN}/board/search/${searchWord}`;
 const GET_RELATION_LIST_URL = (searchWord:string) => `${API_DOMAIN}/search/relation/${searchWord}`;
 
 const GET_BOARD_URL = (boardNumber:number | string) => `${API_DOMAIN}/board/${boardNumber}`;
@@ -111,8 +111,8 @@ export const signUpRequest = async (data: SignUpRequestDto) => {
     return result;
   }
   
-  export const getSearchBoardListRequest = async (searchWord: string) => {
-    const result = await axios.get(GET_SEARCH_BOARD_LIST_URL(searchWord))
+  export const getSearchBoardListRequest = async (searchWord: string , relationWord? :string) => {
+    const result = await axios.get(GET_SEARCH_BOARD_LIST_URL(searchWord, relationWord))
     .then((response) => {
       const responseBody: GetSearchBoardResponseDto = response.data;
       return responseBody;
