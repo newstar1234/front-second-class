@@ -60,14 +60,13 @@ export default function Authentication() {
     if (code === 'DE') alert ('데이터 베이스 에러입니다!!');
     if (code !== 'SU') return;
 
-    // ! 나중에 뭔가 지운거 다시 확인해야함 마지막 시간꺼 //
     const  { token, expiredTime } = result as SignInResponseDto;
 
     const now = new Date().getTime();
     const expires = new Date(now + expiredTime * 1000);
 
-    setCookie("accessToken", token, { expires });
-    navigator("/");
+    setCookie("accessToken", token, { expires, path:MAIN_PATH });
+    navigator(MAIN_PATH);
 
   }
 

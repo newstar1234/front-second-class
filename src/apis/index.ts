@@ -301,8 +301,8 @@ export const signUpRequest = async (data: SignUpRequestDto) => {
     return result;
   }
   
-  export const patchNicknameRequest = async (data: PatchNicknameRequestDto) => {
-    const result = await axios.patch(PATCH_USER_NICKNAME_URL(), data)
+  export const patchNicknameRequest = async (data: PatchNicknameRequestDto, token: string) => {
+    const result = await axios.patch(PATCH_USER_NICKNAME_URL(), data, { headers: { Authorization: `Bearer ${token}` } } )
     .then((response) => {
       const responseBody: PatchNicknameResponseDto = response.data;
       const { code } = responseBody;
@@ -316,8 +316,8 @@ export const signUpRequest = async (data: SignUpRequestDto) => {
     return result;
   }
   
-  export const patchProfileImageRequest = async (data: PatchProfileImageRequestDto) => {
-    const result = await axios.patch(PATCH_USER_PROFILE_URL(), data)
+  export const patchProfileImageRequest = async (data: PatchProfileImageRequestDto, token:string ) => {
+    const result = await axios.patch(PATCH_USER_PROFILE_URL(), data, { headers: { Authorization: `Bearer ${token}` } })
     .then((response) => {
       const responseBody: PatchProfileImageResponseDto = response.data;
       const { code } = responseBody;
