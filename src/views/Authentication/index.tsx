@@ -7,13 +7,12 @@ import { SignUpRequestDto } from 'src/interfaces/request/auth';
 import SignInRequestDto from 'src/interfaces/request/auth/sign-in.request.dto';
 import { useUserStore } from 'src/stores';
 import InputBox from 'src/components/InputBox';
-import { signInMock, userMock } from 'src/mocks';
+import { signInMock } from 'src/mocks';
 import { INPUT_ICON, MAIN_PATH, emailPattern, telNumberPattern } from 'src/constants';
-import { getSignInUserRequest, signInRequest, signUpRequest } from 'src/apis';
+import { signInRequest, signUpRequest } from 'src/apis';
 import { SignInResponseDto } from 'src/interfaces/response/auth';
 import ResponseDto from 'src/interfaces/response/response.dto';
 import './style.css';
-import { GetLoginUserResponseDto } from 'src/interfaces/response/user';
 
 //              component             //
 // description : 인증 화면  //
@@ -45,9 +44,9 @@ export default function Authentication() {
   // description : 로그인 error 상태 //
   const [error, setError] =useState<boolean>(false);
   // description : 이메일 입력값 상태 //
-  const [email, setEmail]=useState<string>(signInMock.email);
+  const [email, setEmail]=useState<string>('');
   // description : 비밀번호 입력값 상태 //
-  const [password, setPassword]=useState<string>(signInMock.password);
+  const [password, setPassword]=useState<string>('');
   // 로그인 정보가 맞으면 user로 정보 전달
   
   //              function              //
@@ -225,7 +224,7 @@ export default function Authentication() {
       if(code === 'ET') setTelNumberDuplicationError(true);
 
       // description : DE -> 데이터베이스 에러 //
-      if(code === 'DE') alert('데이터베이스 오류입니다!!');
+      if(code === 'DE') alert('데이터 베이스 에러입니다.');
     };
 
     //              event handler             //

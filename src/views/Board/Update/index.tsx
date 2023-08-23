@@ -21,11 +21,9 @@ export default function BoardUpdate() {
   const { boardNumber } = useParams();
 
   // description : 게시물 정보를 저장할 상태 //
-  const { boardTitle, boardContent, boardImage, setBoardNumber, setBoardTitle, setBoardContent, setBoardImage } = useBoardWriteStore();
+  const { boardTitle, boardContent, boardImageUrl } = useBoardWriteStore();
+  const { setBoardNumber, setBoardTitle, setBoardContent, setBoardImage, setBoardImageUrl } = useBoardWriteStore();
   
-  // description : 이미지를 저장할 상태 //
-  const [baardImageUrl, setBoardImageUrl] =useState<string | null>(null);
-
   //              function             //
   const navigator = useNavigate();
 
@@ -44,6 +42,7 @@ export default function BoardUpdate() {
     const { title, content, imageUrl } = responseBody as GetBoardResponseDto;
     setBoardTitle(title);
     setBoardContent(content);
+    // setBoardImage(boardImage);
     setBoardImageUrl(imageUrl);
   }
 
@@ -112,9 +111,9 @@ export default function BoardUpdate() {
             <input ref={fileInputRef} type='file' accept='image/*' style={{display: 'none'}}  onChange={onImageInputChangeHandler} />
           </div>
         </div>
-        { baardImageUrl && (
+        { boardImageUrl && (
           <div className='board-write-image-container'>
-            <img className='board-write-image' src={baardImageUrl} />
+            <img className='board-write-image' src={boardImageUrl} />
               <div className='board-write-image-delete-button' onClick={onImageCloseButtonClickHandler}>
                 <div className='image-close-icon'></div>
               </div>
