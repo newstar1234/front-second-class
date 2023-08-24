@@ -5,6 +5,7 @@ import defaultImage from 'src/assets/default-profile-icon.png';
 
 import './style.css';
 import { dateFormat } from 'src/utils';
+import emptyBoard from 'src/assets/empty-board.jpg';
 
 interface Props {  //속성이 같으면 받아짐 // 자바는 클래스가 다르면 안 받아짐 // 혹시 모르니 다 받게 해둠 
   item: BoardListResponseDto;
@@ -62,7 +63,7 @@ export default function BoardListItem({item}: Props) {
         </div>
       </div>
       <div className='board-list-item-right'>
-        <div className='board-list-item-board-image' style={{ backgroundImage: `url(${imageUrl})` }}></div>
+        <div className='board-list-item-board-image' style={{ backgroundImage: `url(${imageUrl ? imageUrl : emptyBoard})` }}></div>
       </div>
     </div>
   )

@@ -283,7 +283,7 @@ export default function BoardDetail() {
         <div className='favorite-list-container'>
           { favoriteList.map((item) => (
             <div className='favorite-list-item'>
-              <div className='favorite-user-profile' style={{backgroundImage: `url(${item.profileImageUrl})` }}></div>
+              <div className='favorite-user-profile' style={{backgroundImage: `url(${item.profileImageUrl ? item.profileImageUrl : defaultProfileImage })` }}></div>
               <div className='favorite-user-nickname'>{ item.nickname }</div>
             </div>
           ))}
